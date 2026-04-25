@@ -312,6 +312,7 @@ tr:hover td { background: var(--bg); }
 <!-- AYARLAR -->
 
 function keyKaydet() {
+  // .value eklemeyi unutma!
   const gk = document.getElementById('inputGeminiKey').value.trim();
   const yk = document.getElementById('inputYTKey').value.trim();
   const durum = document.getElementById('keyDurum');
@@ -320,6 +321,7 @@ function keyKaydet() {
     localStorage.setItem('gemini_api_key', gk);
     console.log("Gemini Key kaydedildi.");
   }
+  
   if (yk) {
     localStorage.setItem('yt_api_key', yk);
     console.log("YouTube Key kaydedildi.");
@@ -328,7 +330,8 @@ function keyKaydet() {
   if (gk || yk) {
     durum.style.color = 'var(--accent)';
     durum.textContent = '✓ Key\'ler başarıyla kaydedildi!';
-    // Inputları temizle
+    
+    // Input kutularını temizle
     document.getElementById('inputGeminiKey').value = '';
     document.getElementById('inputYTKey').value = '';
   } else {
@@ -339,6 +342,7 @@ function keyKaydet() {
   // Arayüzü güncelle
   renderAyarlar();
 }
+
 
 function renderAyarlar() {
   const el = document.getElementById('keyMevcut');
