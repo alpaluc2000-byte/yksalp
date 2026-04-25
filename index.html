@@ -158,6 +158,20 @@ tr:hover td { background: var(–bg); }
 /* HAFTA GRID */
 .hafta-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 8px; text-align: center; }
 
+/* VİDEO KARTLARI */
+.vid-card { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); overflow: hidden; box-shadow: var(–shadow); transition: all 0.15s; }
+.vid-card:hover { border-color: var(–accent); transform: translateY(-2px); }
+.vid-card.izlendi { border-color: var(–accent); }
+.vid-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(–bg); display: block; position: relative; }
+.vid-thumb-wrap { position: relative; cursor: pointer; }
+.vid-thumb-wrap:hover .vid-play { opacity: 1; }
+.vid-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s; font-size: 40px; }
+.vid-body { padding: 14px; }
+.vid-baslik { font-size: 14px; font-weight: 500; line-height: 1.4; margin-bottom: 6px; }
+.vid-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+.vid-sure { font-size: 12px; color: var(–muted); font-family: ‘DM Mono’, monospace; }
+.vid-filter.active { background: var(–accent); color: white; border-color: var(–accent); }
+
 /* SCROLL */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -217,6 +231,7 @@ padding-top: 70px; /* Buton için yer açtık */
     <div class="nav-item" onclick="showPage('konular')"><span class="icon">◉</span> Konular</div>
     <div class="nav-item" onclick="showPage('deneme')"><span class="icon">◻</span> Denemeler</div>
     <div class="nav-item" onclick="showPage('yanlis')"><span class="icon">◬</span> Yanlışlar</div>
+    <div class="nav-item" onclick="showPage('videolar')"><span class="icon">▶</span> Videolar</div>
     <div class="nav-item" onclick="showPage('claude')"><span class="icon">◆</span> Asistan</div>
   </nav>
 
@@ -428,6 +443,18 @@ padding-top: 70px; /* Buton için yer açtık */
         <option>30 dk</option><option>45 dk</option><option>1 saat</option><option>1.5 saat</option><option>2 saat</option>
       </select>
     </div>
+    <div class="form-group">
+      <label>Video Bağla (isteğe bağlı)</label>
+      <select id="yeniGorevVideo">
+        <option value="">— Video bağlama —</option>
+      </select>
+      <div style="margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="yeniGorevVideoKilit" style="width:auto"> 
+          <span style="font-size:13px;color:var(--muted)">Video izlemeden tamamlanamaz (kilitle)</span>
+        </label>
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeGorevModal()">İptal</button>
       <button class="btn btn-primary" onclick="gorevEkle()">Ekle</button>
@@ -484,7 +511,9 @@ let state = JSON.parse(localStorage.getItem('alpYKS_v2') || 'null') || {
   denemeler: [],
   yanlislar: [],
   konular: JSON.parse(JSON.stringify(KONULAR_DB)),
+  videolar: [],
 };
+if (!state.videolar) state.videolar = [];
 
 // Eğer konular yoksa ekle
 if (!state.konular) state.konular = JSON.parse(JSON.stringify(KONULAR_DB));
@@ -619,6 +648,8 @@ function renderPlan() {
         ${g.konu ? `<div class="task-detail">${g.konu}</div>` : ''}
       </div>
       ${g.sure ? `<span style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap">${g.sure}</span>` : ''}
+      ${g.videoId ? (() => { const v = state.videolar.find(x=>x.id==g.videoId); return v ? `<a href="${v.link}" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none;white-space:nowrap" title="${v.baslik}">▶ Video</a>` : ''; })() : ''}
+      ${g.videoKilit && g.videoId ? '<span style="font-size:12px;color:var(--warn)" title="Videoyu izlemeden tamamlayamazsın">🔒</span>' : ''}
       <span class="task-tag tag-${g.ders}">${g.ders.toUpperCase()}</span>
       <button onclick="silGorev('${key}','${g.id}')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:0 4px;line-height:1">×</button>
     `;
@@ -629,7 +660,18 @@ function renderPlan() {
 
 function toggleGorev(key, id) {
   const g = state.gorevler[key] && state.gorevler[key].find(x => x.id === id);
-  if (g) { g.done = !g.done; save(); renderAll(); }
+  if (!g) return;
+  if (!g.done && g.videoKilit && g.videoId) {
+    const v = state.videolar.find(x => x.id == g.videoId);
+    if (v && !v.izlendi) {
+      if (confirm(`"${v.baslik}" videosunu izledin mi? Videoyu izlemeden bu görevi tamamlayamazsın!`)) {
+        window.open(v.link, '_blank');
+        return;
+      }
+      return;
+    }
+  }
+  g.done = !g.done; save(); renderAll();
 }
 
 function silGorev(key, id) {
@@ -639,7 +681,7 @@ function silGorev(key, id) {
 function prevDay() { currentDayOffset--; renderPlan(); }
 function nextDay() { currentDayOffset++; renderPlan(); }
 
-function openGorevModal() { document.getElementById('gorevModal').classList.add('open'); document.getElementById('yeniGorevAd').value = ''; document.getElementById('yeniGorevKonu').value = ''; }
+function openGorevModal() { document.getElementById('gorevModal').classList.add('open'); document.getElementById('yeniGorevAd').value = ''; document.getElementById('yeniGorevKonu').value = ''; document.getElementById('yeniGorevVideoKilit').checked = false; populateVideoSelect(); }
 function closeGorevModal() { document.getElementById('gorevModal').classList.remove('open'); }
 
 function gorevEkle() {
@@ -647,12 +689,16 @@ function gorevEkle() {
   if (!ad) return;
   const key = todayKey(currentDayOffset);
   ensureGorevler(key);
+  const videoId = document.getElementById('yeniGorevVideo').value;
+  const videoKilit = document.getElementById('yeniGorevVideoKilit').checked;
   state.gorevler[key].push({
     id: key + '_' + Date.now(),
     ad,
     konu: document.getElementById('yeniGorevKonu').value.trim(),
     ders: document.getElementById('yeniGorevDers').value,
     sure: document.getElementById('yeniGorevSure').value,
+    videoId: videoId || null,
+    videoKilit: videoKilit && !!videoId,
     done: false,
   });
   save(); closeGorevModal(); renderAll();
@@ -934,6 +980,113 @@ function appendMsg(text, who, loading = false) {
   return el;
 }
 
+
+// ==================== VİDEOLAR ====================
+let vidAktifFiltre = 'hepsi';
+
+function getYouTubeId(url) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function videoEkle() {
+  const link = document.getElementById('vidLink').value.trim();
+  const baslik = document.getElementById('vidBaslik').value.trim();
+  if (!baslik || !link) { alert('Başlık ve link zorunlu!'); return; }
+  const ytId = getYouTubeId(link);
+  state.videolar.push({
+    id: Date.now(),
+    ders: document.getElementById('vidDers').value,
+    konu: document.getElementById('vidKonu').value.trim(),
+    baslik,
+    link,
+    sure: document.getElementById('vidSure').value.trim(),
+    ytId,
+    izlendi: false,
+  });
+  save();
+  ['vidBaslik','vidLink','vidKonu','vidSure'].forEach(id => document.getElementById(id).value = '');
+  renderVideolar();
+  populateVideoSelect();
+}
+
+function videoSil(id) {
+  state.videolar = state.videolar.filter(v => v.id !== id);
+  save(); renderVideolar(); populateVideoSelect();
+}
+
+function videoToggleIzlendi(id) {
+  const v = state.videolar.find(v => v.id === id);
+  if (v) { v.izlendi = !v.izlendi; save(); renderVideolar(); }
+}
+
+function vidFiltrele(filtre, btn) {
+  vidAktifFiltre = filtre;
+  document.querySelectorAll('.vid-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVideolar();
+}
+
+const DERS_LABEL = { mat:'Matematik', kim:'Kimya', fiz:'Fizik', biy:'Biyoloji', tyt:'TYT' };
+const DERS_TAG = { mat:'tag-mat', kim:'tag-kim', fiz:'tag-fiz', biy:'tag-tyt', tyt:'tag-tyt' };
+
+function renderVideolar() {
+  const grid = document.getElementById('videoGrid');
+  const bos = document.getElementById('videoBos');
+  if (!grid) return;
+
+  const arama = (document.getElementById('vidArama')?.value || '').toLowerCase();
+  let list = state.videolar.filter(v => {
+    if (vidAktifFiltre === 'izlendi') return v.izlendi;
+    if (vidAktifFiltre === 'izlenmedi') return !v.izlendi;
+    if (vidAktifFiltre !== 'hepsi') return v.ders === vidAktifFiltre;
+    return true;
+  }).filter(v => !arama || v.baslik.toLowerCase().includes(arama) || (v.konu||'').toLowerCase().includes(arama));
+
+  if (list.length === 0) { grid.innerHTML = ''; bos.style.display = 'block'; return; }
+  bos.style.display = 'none';
+
+  grid.innerHTML = list.map(v => {
+    const thumb = v.ytId ? `https://img.youtube.com/vi/${v.ytId}/mqdefault.jpg` : '';
+    return `
+    <div class="vid-card ${v.izlendi ? 'izlendi' : ''}">
+      <a href="${v.link}" target="_blank" class="vid-thumb-wrap">
+        ${thumb ? `<img class="vid-thumb" src="${thumb}" alt="${v.baslik}" loading="lazy">` : '<div class="vid-thumb" style="display:flex;align-items:center;justify-content:center;font-size:32px">▶</div>'}
+        <div class="vid-play">▶</div>
+        ${v.izlendi ? '<div style="position:absolute;top:8px;right:8px;background:var(--accent);color:white;border-radius:99px;padding:2px 10px;font-size:11px;font-family:DM Mono,monospace">✓ İzlendi</div>' : ''}
+      </a>
+      <div class="vid-body">
+        <div class="vid-baslik">${v.baslik}</div>
+        ${v.konu ? `<div style="font-size:12px;color:var(--muted);margin-top:2px">${v.konu}</div>` : ''}
+        <div class="vid-meta">
+          <div style="display:flex;gap:6px;align-items:center">
+            <span class="task-tag ${DERS_TAG[v.ders]||'tag-tyt'}">${DERS_LABEL[v.ders]||v.ders}</span>
+            ${v.sure ? `<span class="vid-sure">${v.sure}</span>` : ''}
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-secondary btn-sm" onclick="videoToggleIzlendi(${v.id})" style="padding:4px 10px;font-size:12px">${v.izlendi ? '↩ Geri Al' : '✓ İzledim'}</button>
+            <button class="btn btn-danger btn-sm" onclick="videoSil(${v.id})" style="padding:4px 8px;font-size:12px">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `}).join('');
+}
+
+function populateVideoSelect() {
+  const sel = document.getElementById('yeniGorevVideo');
+  if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— Video bağlama —</option>';
+  state.videolar.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.id;
+    opt.textContent = `[${DERS_LABEL[v.ders]||v.ders}] ${v.baslik}`;
+    sel.appendChild(opt);
+  });
+  sel.value = current;
+}
+
 // ==================== RENDER ALL ====================
 function renderAll() {
   renderCountdown();
@@ -942,6 +1095,7 @@ function renderAll() {
   renderKonular();
   renderDenemeler();
   renderYanlislar();
+  renderVideolar();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
