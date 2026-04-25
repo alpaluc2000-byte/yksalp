@@ -222,9 +222,26 @@ tr:hover td { background: var(--bg); }
 <!-- VİDEOLAR -->
 
 <div id="page-videolar" class="page">
-  <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Video Havuzu</h2><p>Ders videolarını ekle ve takip et</p></div></div>
+  <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Video Havuzu</h2><p>Playlist'ten otomatik çek veya manuel ekle</p></div></div>
+
+  <!-- PLAYLİST ÇEKME -->
+
   <div class="card">
-    <div class="card-title" style="margin-bottom:16px">Video Ekle</div>
+    <div class="card-title" style="margin-bottom:4px">📥 Playlist'ten Otomatik Çek</div>
+    <div class="card-sub" style="margin-bottom:16px">Butona bas, playlist'teki tüm videolar otomatik eklenir</div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+      <button class="btn btn-secondary" onclick="playlistCek('mat','PLKnwXmWGonPlsUgCh9lJbweZUDEt7hHhQ')">📐 Matematik Playlist</button>
+      <button class="btn btn-secondary" onclick="playlistCek('kim','PLBals97P4r_ZDJ9zWOOprF8Vi4VjXtXGk')">⚗️ Kimya Playlist</button>
+      <button class="btn btn-secondary" onclick="playlistCek('fiz','PL5kIOunpmSBNDKxoPl8PQxg1ijK1B2mdW')">⚡ Fizik Playlist</button>
+      <button class="btn btn-secondary" onclick="playlistCek('biy','PL5kIOunpmSBO4dLSpxMv5gQn3-_ZKEzVi')">🧬 Biyoloji Playlist</button>
+    </div>
+    <div id="playlistDurum" style="font-size:13px;color:var(--muted);min-height:20px"></div>
+  </div>
+
+  <!-- MANUEL EKLEME -->
+
+  <div class="card">
+    <div class="card-title" style="margin-bottom:16px">➕ Manuel Video Ekle</div>
     <div class="grid-3">
       <div class="form-group"><label>Ders</label><select id="vidDers"><option value="mat">Matematik</option><option value="kim">Kimya</option><option value="fiz">Fizik</option><option value="biy">Biyoloji</option><option value="tyt">TYT</option></select></div>
       <div class="form-group"><label>Konu</label><input type="text" id="vidKonu" placeholder="ör: Türev Uygulamaları"></div>
@@ -524,6 +541,40 @@ function renderKonular(){
       cont.innerHTML+='<div class="konu-card"><div class="konu-header"><div class="konu-name">'+k.ad+'</div><button class="konu-durum '+dc+'" onclick="konuSikla(\''+d+'\',\''+k.id+'\')">'+dl+'</button></div>'+(alts?'<div class="konu-alt">'+alts+'</div>':'')+'</div>';
     });
   });
+}
+
+const YT_KEY = 'AIzaSyAlRMUhWPV2tczruvovJDt2Avco-lAF8Ys';
+
+async function playlistCek(ders, playlistId) {
+  const durum = document.getElementById('playlistDurum');
+  const dersAd = {mat:'Matematik',kim:'Kimya',fiz:'Fizik',biy:'Biyoloji'}[ders];
+  durum.style.color = 'var(--warn)';
+  durum.textContent = dersAd + ' playlist çekiliyor...';
+  let tumVideolar = [], nextPageToken = '';
+  try {
+    do {
+      const url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=' + playlistId + '&key=' + YT_KEY + (nextPageToken ? '&pageToken=' + nextPageToken : '');
+      const res = await fetch(url);
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error?.message || 'HTTP ' + res.status); }
+      const data = await res.json();
+      tumVideolar = tumVideolar.concat(data.items || []);
+      nextPageToken = data.nextPageToken || '';
+    } while (nextPageToken);
+    let eklendi = 0, atlandi = 0;
+    tumVideolar.forEach(item => {
+      const s = item.snippet, vidId = s.resourceId?.videoId;
+      if (!vidId || s.title === 'Private video' || s.title === 'Deleted video') { atlandi++; return; }
+      if (S.videolar.find(v => v.ytId === vidId)) { atlandi++; return; }
+      S.videolar.push({ id: Date.now() + Math.random(), ders, konu:'', baslik: s.title, link:'https://youtube.com/watch?v='+vidId, sure:'', ytId: vidId, izlendi: false });
+      eklendi++;
+    });
+    save(); renderVideolar();
+    durum.style.color = 'var(--accent)';
+    durum.textContent = '✓ ' + dersAd + ': ' + eklendi + ' video eklendi' + (atlandi ? ', ' + atlandi + ' atlandı' : '') + '.';
+  } catch(e) {
+    durum.style.color = 'var(--danger)';
+    durum.textContent = '✕ Hata: ' + e.message;
+  }
 }
 
 function getYTId(url){const m=url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);return m?m[1]:null;}
