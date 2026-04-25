@@ -347,7 +347,22 @@ tr:hover td { background: var(--bg); }
   </div>
 </div>
 
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCiWhtP2DODDgNiD49dtNC3ksS7XS7EClQ",
+  authDomain: "yksalp-6588a.firebaseapp.com",
+  projectId: "yksalp-6588a",
+  storageBucket: "yksalp-6588a.firebasestorage.app",
+  messagingSenderId: "886833328232",
+  appId: "1:886833328232:web:89c4dd9663c2966d7fcbdd"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const DOC_REF = doc(db, 'kullanici', 'alp');
+
 const GUNLER = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const YKS = new Date('2026-06-20');
 const DL = {mat:'Matematik',kim:'Kimya',fiz:'Fizik',biy:'Biyoloji',tyt:'TYT',den:'Deneme',mol:'Mola'};
@@ -392,16 +407,52 @@ const KDB = {
   ],
 };
 
-let S = JSON.parse(localStorage.getItem('alpYKS_v4')||'null') || {
+let S = {
   gorevler:{}, denemeler:[], yanlislar:[], videolar:[],
   konular: JSON.parse(JSON.stringify(KDB)),
 };
-if(!S.videolar) S.videolar=[];
-if(!S.konular) S.konular=JSON.parse(JSON.stringify(KDB));
 
 let dayOff=0, vidF='hepsi';
-const save=()=>localStorage.setItem('alpYKS_v4',JSON.stringify(S));
+let saveTimeout = null;
+
 const todayKey=(o=0)=>{const d=new Date();d.setDate(d.getDate()+o);return d.toISOString().split('T')[0];};
+
+// Firebase'e kaydet (debounce ile - 1 saniye bekler)
+function save() {
+  localStorage.setItem('alpYKS_v4', JSON.stringify(S)); // yedek olarak localstorage
+  if (saveTimeout) clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(async () => {
+    try {
+      await setDoc(DOC_REF, JSON.parse(JSON.stringify(S)));
+    } catch(e) { console.warn('Firebase kayıt hatası:', e); }
+  }, 1000);
+}
+
+// Firebase'den gerçek zamanlı dinle
+function firebaseBaslat() {
+  // Önce localStorage'dan yükle (hızlı başlangıç)
+  const local = localStorage.getItem('alpYKS_v4');
+  if (local) {
+    try {
+      S = JSON.parse(local);
+      if(!S.videolar) S.videolar=[];
+      if(!S.konular) S.konular=JSON.parse(JSON.stringify(KDB));
+    } catch(e) {}
+  }
+  renderAll();
+
+  // Sonra Firebase'den dinle (senkronizasyon)
+  onSnapshot(DOC_REF, (snap) => {
+    if (snap.exists()) {
+      const data = snap.data();
+      S = data;
+      if(!S.videolar) S.videolar=[];
+      if(!S.konular) S.konular=JSON.parse(JSON.stringify(KDB));
+      localStorage.setItem('alpYKS_v4', JSON.stringify(S));
+      renderAll();
+    }
+  }, (err) => { console.warn('Firebase okuma hatası:', err); });
+}
 
 function showPage(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -687,7 +738,7 @@ function renderYanlislar(){
 
 async function sendChat(){
   const input=document.getElementById('chatInput'), msg=input.value.trim();
-  const KEY='BURAYA_KEY_YAZ';
+  const KEY='AIzaSyBzYMFG2F00oiKk6BnFu3o0i0cZWZuThA4';
   if(!msg)return;
   input.value='';
   appendMsg(msg,'user');
@@ -713,7 +764,8 @@ function renderAll(){renderCountdown();renderDashboard();renderPlan();renderKonu
 
 document.addEventListener('DOMContentLoaded',()=>{
   const dt=document.getElementById('denTarih');if(dt)dt.value=todayKey();
-  renderAll();setInterval(renderCountdown,60000);
+  firebaseBaslat();
+  setInterval(renderCountdown,60000);
 });
 </script>
 
