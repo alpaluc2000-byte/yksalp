@@ -311,58 +311,30 @@ tr:hover td { background: var(--bg); }
 
 <!-- AYARLAR -->
 
-function keyKaydet() {
-  // .value eklemeyi unutma!
-  const gk = document.getElementById('inputGeminiKey').value.trim();
-  const yk = document.getElementById('inputYTKey').value.trim();
-  const durum = document.getElementById('keyDurum');
-
-  if (gk) {
-    localStorage.setItem('gemini_api_key', gk);
-    console.log("Gemini Key kaydedildi.");
-  }
-  
-  if (yk) {
-    localStorage.setItem('yt_api_key', yk);
-    console.log("YouTube Key kaydedildi.");
-  }
-
-  if (gk || yk) {
-    durum.style.color = 'var(--accent)';
-    durum.textContent = '✓ Key\'ler başarıyla kaydedildi!';
-    
-    // Input kutularını temizle
-    document.getElementById('inputGeminiKey').value = '';
-    document.getElementById('inputYTKey').value = '';
-  } else {
-    durum.style.color = 'var(--danger)';
-    durum.textContent = 'Lütfen en az bir key girin.';
-  }
-
-  // Arayüzü güncelle
-  renderAyarlar();
-}
-
-
-function renderAyarlar() {
-  const el = document.getElementById('keyMevcut');
-  if (!el) return;
-  
-  const gk = localStorage.getItem('gemini_api_key');
-  const yk = localStorage.getItem('yt_api_key');
-  
-  el.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:14px">Gemini API Key</span>
-      <span class="badge ${gk ? 'badge-good' : 'badge-bad'}">${gk ? '✓ Girildi' : '✕ Girilmedi'}</span>
+<div id="page-ayarlar" class="page">
+  <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>⚙️ Ayarlar</h2><p>API key'lerini buradan güvenli gir</p></div></div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:8px">🔑 API Key'ler</div>
+    <div class="card-sub" style="margin-bottom:20px">Key'ler sadece bu cihazın tarayıcısında saklanır, kodda görünmez.</div>
+    <div class="form-group">
+      <label>Gemini API Key (Asistan için)</label>
+      <input type="password" id="inputGeminiKey" placeholder="AIzaSy...">
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
-      <span style="font-size:14px">YouTube API Key</span>
-      <span class="badge ${yk ? 'badge-good' : 'badge-bad'}">${yk ? '✓ Girildi' : '✕ Girilmedi'}</span>
+    <div class="form-group">
+      <label>YouTube API Key (Playlist çekmek için)</label>
+      <input type="password" id="inputYTKey" placeholder="AIzaSy...">
     </div>
-  `;
-}
-
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="keyKaydet()">Kaydet</button>
+      <button class="btn btn-secondary" onclick="keySil()">Temizle</button>
+    </div>
+    <div id="keyDurum" style="margin-top:12px;font-size:13px"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:12px">Mevcut Durum</div>
+    <div id="keyMevcut"></div>
+  </div>
+</div>
 
 <!-- ASİSTAN -->
 
@@ -795,6 +767,7 @@ async function sendChat(){
   const input=document.getElementById('chatInput'), msg=input.value.trim();
   const KEY=getGeminiKey();
   if(!KEY){ appendMsg('⚙️ Önce Ayarlar sayfasından Gemini API key gir!','ai'); return; }
+  if(!msg)return;
   input.value='';
   appendMsg(msg,'user');
   const le=appendMsg('Düşünüyorum...','ai',true);
@@ -815,7 +788,42 @@ function appendMsg(t,w,l=false){
   a.appendChild(el);a.scrollTop=a.scrollHeight;return el;
 }
 
-function renderAll(){renderCountdown();renderDashboard();renderPlan();renderKonular();renderDenemeler();renderYanlislar();renderVideolar();}
+function keyKaydet(){
+  const gk=document.getElementById('inputGeminiKey').value.trim();
+  const yk=document.getElementById('inputYTKey').value.trim();
+  if(gk) localStorage.setItem('gemini_api_key', gk);
+  if(yk) localStorage.setItem('yt_api_key', yk);
+  const durum=document.getElementById('keyDurum');
+  durum.style.color='var(--accent)';
+  durum.textContent='✓ Key\'ler kaydedildi!';
+  document.getElementById('inputGeminiKey').value='';
+  document.getElementById('inputYTKey').value='';
+  renderAyarlar();
+}
+function keySil(){
+  localStorage.removeItem('gemini_api_key');
+  localStorage.removeItem('yt_api_key');
+  const durum=document.getElementById('keyDurum');
+  durum.style.color='var(--danger)';
+  durum.textContent='Key\'ler temizlendi.';
+  renderAyarlar();
+}
+function renderAyarlar(){
+  const el=document.getElementById('keyMevcut');
+  if(!el)return;
+  const gk=getGeminiKey(), yk=getYTKey();
+  el.innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">'+
+      '<span style="font-size:14px">Gemini API Key</span>'+
+      '<span class="badge '+(gk?'badge-good':'badge-bad')+'">'+(gk?'✓ Girildi':'✕ Girilmedi')+'</span>'+
+    '</div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">'+
+      '<span style="font-size:14px">YouTube API Key</span>'+
+      '<span class="badge '+(yk?'badge-good':'badge-bad')+'">'+(yk?'✓ Girildi':'✕ Girilmedi')+'</span>'+
+    '</div>';
+}
+
+function renderAll(){renderCountdown();renderDashboard();renderPlan();renderKonular();renderDenemeler();renderYanlislar();renderVideolar();renderAyarlar();}
 
 document.addEventListener('DOMContentLoaded',()=>{
   const dt=document.getElementById('denTarih');if(dt)dt.value=todayKey();
