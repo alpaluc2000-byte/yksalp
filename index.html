@@ -21,181 +21,50 @@
     --radius: 12px;
     --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.05);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  /* LAYOUT */
+  /* SIDEBAR */
   .app { display: flex; min-height: 100vh; }
-
-  .sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 28px 0;
-    position: fixed;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 10;
-  }
-
-  .sidebar-logo {
-    padding: 0 20px 24px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
-
-  .sidebar-logo h1 {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.3px;
-  }
-
-  .sidebar-logo span {
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 0;
-    font-size: 14px;
-    color: var(--muted);
-    transition: all 0.15s;
-    border-left: 3px solid transparent;
-  }
-
+  .sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 28px 0; position: fixed; height: 100vh; overflow-y: auto; z-index: 10; }
+  .sidebar-logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .sidebar-logo h1 { font-size: 16px; font-weight: 600; }
+  .sidebar-logo span { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; cursor: pointer; font-size: 14px; color: var(--muted); transition: all 0.15s; border-left: 3px solid transparent; }
   .nav-item:hover { background: var(--bg); color: var(--text); }
   .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
   .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
-
-  .main {
-    margin-left: 220px;
-    flex: 1;
-    padding: 32px;
-    max-width: calc(100% - 220px);
-  }
-
+  .main { margin-left: 220px; flex: 1; padding: 32px; max-width: calc(100% - 220px); }
   .page { display: none; }
   .page.active { display: block; }
 
   /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-  }
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .card-title { font-size: 16px; font-weight: 600; }
   .card-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
-  /* STAT BOXES */
-  .stat-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
-  }
-
+  /* STAT */
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
   .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-family: 'DM Mono', monospace; }
   .stat-value { font-size: 28px; font-weight: 600; margin-top: 4px; font-family: 'DM Mono', monospace; }
   .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
 
-  /* PROGRESS BAR */
-  .progress-bar {
-    height: 6px;
-    background: var(--border);
-    border-radius: 99px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 99px;
-    transition: width 0.4s ease;
-  }
-
-  /* TASK LIST */
+  /* TASKS */
   .task-list { display: flex; flex-direction: column; gap: 8px; }
-
-  .task-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--surface);
-  }
-
+  .task-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; background: var(--surface); }
   .task-item:hover { border-color: var(--accent); }
-
-  .task-item.done {
-    background: var(--accent-light);
-    border-color: var(--accent);
-  }
-
+  .task-item.done { background: var(--accent-light); border-color: var(--accent); }
   .task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
-
-  .task-check {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border);
-    border-radius: 5px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    font-size: 11px;
-    color: white;
-  }
-
-  .task-item.done .task-check {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-
+  .task-check { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 11px; color: white; }
+  .task-item.done .task-check { background: var(--accent); border-color: var(--accent); }
   .task-text { flex: 1; font-size: 14px; }
-  .task-tag {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-family: 'DM Mono', monospace;
-    font-weight: 500;
-  }
-
+  .task-detail { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .task-tag { font-size: 11px; padding: 2px 8px; border-radius: 99px; font-family: 'DM Mono', monospace; font-weight: 500; }
   .tag-mat { background: #e8f0fe; color: #1a56db; }
   .tag-kim { background: #fef3c7; color: #92400e; }
   .tag-fiz { background: #fce7f3; color: #9d174d; }
@@ -204,202 +73,104 @@
   .tag-mol { background: var(--bg); color: var(--muted); }
 
   /* BUTTONS */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 9px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: 'DM Sans', sans-serif;
-  }
-
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
   .btn-primary { background: var(--accent); color: white; }
   .btn-primary:hover { background: #235c42; }
   .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { background: var(--border); }
   .btn-danger { background: var(--danger-light); color: var(--danger); }
-  .btn-danger:hover { background: #fad7d3; }
+  .btn-sm { padding: 6px 12px; font-size: 13px; }
 
   /* INPUTS */
-  input, textarea, select {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    padding: 9px 12px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    transition: border 0.15s;
-    width: 100%;
-  }
-
+  input, textarea, select { font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); outline: none; transition: border 0.15s; width: 100%; }
   input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-  textarea { resize: vertical; min-height: 100px; }
-
+  textarea { resize: vertical; min-height: 80px; }
   label { font-size: 13px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 6px; }
-
   .form-group { margin-bottom: 16px; }
 
-  /* DENEME TABLE */
+  /* TABLE */
   table { width: 100%; border-collapse: collapse; }
   th { font-size: 12px; color: var(--muted); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; }
-  td { padding: 12px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--bg); }
-
-  .badge {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 99px;
-    font-size: 12px;
-    font-weight: 500;
-    font-family: 'DM Mono', monospace;
-  }
-
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; font-family: 'DM Mono', monospace; }
   .badge-good { background: var(--accent-light); color: var(--accent); }
   .badge-mid { background: var(--warn-light); color: var(--warn); }
   .badge-bad { background: var(--danger-light); color: var(--danger); }
 
-  /* CLAUDE CHAT */
-  .chat-area {
-    height: 420px;
-    overflow-y: auto;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    background: var(--bg);
-    border-radius: 8px;
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-  }
-
-  .msg {
-    max-width: 80%;
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  .msg-user {
-    align-self: flex-end;
-    background: var(--accent);
-    color: white;
-    border-bottom-right-radius: 4px;
-  }
-
-  .msg-ai {
-    align-self: flex-start;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-  }
-
-  .msg-ai.loading { color: var(--muted); font-style: italic; }
-
-  .chat-input-row { display: flex; gap: 8px; }
-  .chat-input-row input { flex: 1; }
-
-  /* HEADER */
-  .page-header { margin-bottom: 28px; }
-  .page-header h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
-  .page-header p { font-size: 14px; color: var(--muted); margin-top: 4px; }
-
   /* COUNTDOWN */
-  .countdown-box {
-    background: var(--text);
-    color: white;
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-
+  .countdown-box { background: var(--text); color: white; border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
   .countdown-label { font-size: 13px; opacity: 0.6; font-family: 'DM Mono', monospace; }
   .countdown-value { font-size: 36px; font-weight: 600; font-family: 'DM Mono', monospace; }
   .countdown-sub { font-size: 12px; opacity: 0.5; }
 
-  /* SECTION TITLE */
-  .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-    margin-bottom: 12px;
-    font-family: 'DM Mono', monospace;
-  }
+  /* KONU KARTLARI */
+  .konu-card { border: 1px solid var(--border); border-radius: 10px; padding: 16px; background: var(--surface); margin-bottom: 8px; }
+  .konu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .konu-name { font-size: 14px; font-weight: 500; }
+  .konu-durum { font-size: 12px; padding: 3px 10px; border-radius: 99px; font-weight: 500; cursor: pointer; border: none; font-family: 'DM Mono', monospace; }
+  .durum-bitti { background: var(--accent-light); color: var(--accent); }
+  .durum-devam { background: var(--warn-light); color: var(--warn); }
+  .durum-baslamadi { background: var(--danger-light); color: var(--danger); }
+  .konu-alt { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .alt-konu { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; }
+  .alt-konu.done { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+  .alt-konu.devam { background: var(--warn-light); color: var(--warn); border-color: var(--warn); }
 
-  /* DIVIDER */
+  /* CHAT */
+  .chat-area { height: 380px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .msg { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+  .msg-user { align-self: flex-end; background: var(--accent); color: white; border-bottom-right-radius: 4px; }
+  .msg-ai { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .msg-ai.loading { color: var(--muted); font-style: italic; }
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input-row input { flex: 1; }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+  .page-header h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+  .page-header p { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .back-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; transition: all 0.15s; flex-shrink: 0; }
+  .back-btn:hover { background: var(--border); color: var(--text); }
+
+  /* SECTION */
+  .section-title { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 12px; font-family: 'DM Mono', monospace; }
   .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
   /* YANLIS */
-  .yanlis-item {
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 8px;
-    background: var(--surface);
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
+  .yanlis-item { padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; background: var(--surface); display: flex; align-items: flex-start; gap: 12px; }
   .yanlis-left { flex: 1; }
   .yanlis-ders { font-size: 12px; font-family: 'DM Mono', monospace; color: var(--muted); margin-bottom: 4px; }
   .yanlis-konu { font-size: 14px; font-weight: 500; }
   .yanlis-not { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .yanlis-sil { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 4px; }
+  .yanlis-sil { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 18px; padding: 0 4px; line-height: 1; }
   .yanlis-sil:hover { color: var(--danger); }
 
-  /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .sidebar { display: none; }
-    .main { margin-left: 0; max-width: 100%; padding: 20px 16px; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-  }
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border-radius: var(--radius); padding: 28px; width: 480px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+  .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
+  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+
+  /* HAFTA GRID */
+  .hafta-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 8px; text-align: center; }
 
   /* SCROLL */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-  /* MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.3);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; max-width: 100%; padding: 16px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .hafta-grid { grid-template-columns: repeat(4,1fr); }
   }
-
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 28px;
-    width: 480px;
-    max-width: 90vw;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-  }
-
-  .modal-title { font-size: 17px; font-weight: 600; margin-bottom: 20px; }
-  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
 </style>
 </head>
 <body>
-
 <div class="app">
   <!-- SIDEBAR -->
   <nav class="sidebar">
@@ -407,33 +178,19 @@
       <h1>Alp / YKS</h1>
       <span id="sidebarCountdown">— gün kaldı</span>
     </div>
-    <div class="nav-item active" onclick="showPage('dashboard')">
-      <span class="icon">◈</span> Dashboard
-    </div>
-    <div class="nav-item" onclick="showPage('plan')">
-      <span class="icon">◷</span> Günlük Plan
-    </div>
-    <div class="nav-item" onclick="showPage('deneme')">
-      <span class="icon">◻</span> Denemeler
-    </div>
-    <div class="nav-item" onclick="showPage('yanlis')">
-      <span class="icon">◬</span> Yanlışlar
-    </div>
-    <div class="nav-item" onclick="showPage('claude')">
-      <span class="icon">◆</span> Claude ile Analiz
-    </div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">◈</span> Dashboard</div>
+    <div class="nav-item" onclick="showPage('plan')"><span class="icon">◷</span> Günlük Plan</div>
+    <div class="nav-item" onclick="showPage('konular')"><span class="icon">◉</span> Konular</div>
+    <div class="nav-item" onclick="showPage('deneme')"><span class="icon">◻</span> Denemeler</div>
+    <div class="nav-item" onclick="showPage('yanlis')"><span class="icon">◬</span> Yanlışlar</div>
+    <div class="nav-item" onclick="showPage('claude')"><span class="icon">◆</span> Asistan</div>
   </nav>
 
-  <!-- MAIN -->
   <main class="main">
 
     <!-- DASHBOARD -->
     <div id="page-dashboard" class="page active">
-      <div class="page-header">
-        <h2>Merhaba Alp 👋</h2>
-        <p id="bugunTarih">Bugün yükleniyor...</p>
-      </div>
-
+      <div class="page-header"><div><h2>Merhaba Alp 👋</h2><p id="bugunTarih"></p></div></div>
       <div class="countdown-box">
         <div>
           <div class="countdown-label">YKS'YE KALAN</div>
@@ -446,49 +203,39 @@
           <div class="countdown-sub">AYT Sayısal</div>
         </div>
       </div>
-
       <div class="grid-3" style="margin-bottom:20px">
         <div class="stat-box">
           <div class="stat-label">Bugün Tamamlanan</div>
           <div class="stat-value" id="statBugun">0</div>
-          <div class="stat-sub">görev</div>
+          <div class="stat-sub" id="statBugunSub">/ 0 görev</div>
           <div class="progress-bar"><div class="progress-fill" id="bugunBar" style="width:0%"></div></div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Konu İlerlemesi</div>
+          <div class="stat-value" id="statKonu">0%</div>
+          <div class="stat-sub">toplam tamamlanan</div>
+          <div class="progress-bar"><div class="progress-fill" id="konuBar" style="width:0%"></div></div>
         </div>
         <div class="stat-box">
           <div class="stat-label">Toplam Deneme</div>
           <div class="stat-value" id="statDeneme">0</div>
           <div class="stat-sub">deneme girildi</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Takip Edilen Yanlış</div>
-          <div class="stat-value" id="statYanlis">0</div>
-          <div class="stat-sub">konu</div>
-        </div>
       </div>
-
       <div class="grid-2">
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title">Bugünün Planı</div>
-              <div class="card-sub" id="dashPlanSub">Yükleniyor...</div>
-            </div>
-            <button class="btn btn-secondary" onclick="showPage('plan')" style="font-size:13px">Tümü →</button>
+            <div><div class="card-title">Bugünün Planı</div><div class="card-sub" id="dashPlanSub"></div></div>
+            <button class="btn btn-secondary btn-sm" onclick="showPage('plan')">Tümü →</button>
           </div>
           <div class="task-list" id="dashPlanList"></div>
         </div>
-
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title">Son Denemeler</div>
-              <div class="card-sub">Net ortalamaları</div>
-            </div>
-            <button class="btn btn-secondary" onclick="showPage('deneme')" style="font-size:13px">Tümü →</button>
+            <div><div class="card-title">Zayıf Konular</div><div class="card-sub">Öncelikli çalışılacaklar</div></div>
+            <button class="btn btn-secondary btn-sm" onclick="showPage('konular')">Detay →</button>
           </div>
-          <div id="dashDenemeler">
-            <p style="color:var(--muted);font-size:14px">Henüz deneme girilmedi.</p>
-          </div>
+          <div id="dashZayif"></div>
         </div>
       </div>
     </div>
@@ -496,97 +243,89 @@
     <!-- GÜNLÜK PLAN -->
     <div id="page-plan" class="page">
       <div class="page-header">
-        <h2>Günlük Plan</h2>
-        <p>Görevleri tıklayarak tamamla</p>
+        <button class="back-btn" onclick="showPage('dashboard')">← Geri</button>
+        <div><h2>Günlük Plan</h2><p>Görevleri tıklayarak tamamla</p></div>
       </div>
-
-      <div class="card" style="margin-bottom:16px">
+      <div class="card">
         <div class="card-header">
-          <div class="card-title" id="planGunBaslik">Pazartesi</div>
+          <div class="card-title" id="planGunBaslik">—</div>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-secondary" onclick="prevDay()" style="font-size:13px">← Önceki</button>
-            <button class="btn btn-secondary" onclick="nextDay()" style="font-size:13px">Sonraki →</button>
+            <button class="btn btn-secondary btn-sm" onclick="prevDay()">← Önceki</button>
+            <button class="btn btn-secondary btn-sm" onclick="nextDay()">Sonraki →</button>
           </div>
         </div>
         <div class="task-list" id="planTaskList"></div>
         <hr class="divider">
-        <button class="btn btn-secondary" onclick="openGorevModal()" style="font-size:13px">+ Görev Ekle</button>
+        <button class="btn btn-secondary btn-sm" onclick="openGorevModal()">+ Görev Ekle</button>
       </div>
-
       <div class="card">
         <div class="card-title" style="margin-bottom:16px">Haftalık İlerleme</div>
-        <div id="haftaGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center"></div>
+        <div class="hafta-grid" id="haftaGrid"></div>
+      </div>
+    </div>
+
+    <!-- KONULAR -->
+    <div id="page-konular" class="page">
+      <div class="page-header">
+        <button class="back-btn" onclick="showPage('dashboard')">← Geri</button>
+        <div><h2>Konu Takibi</h2><p>Durumunu tıklayarak güncelle</p></div>
+      </div>
+
+      <!-- MAT -->
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">📐 Matematik</div><div class="card-sub" id="matSub"></div></div>
+          <div class="progress-bar" style="width:120px"><div class="progress-fill" id="matBar" style="width:0%"></div></div>
+        </div>
+        <div id="matKonular"></div>
+      </div>
+
+      <!-- KİMYA -->
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">⚗️ Kimya</div><div class="card-sub" id="kimSub"></div></div>
+          <div class="progress-bar" style="width:120px"><div class="progress-fill" id="kimBar" style="width:0%"></div></div>
+        </div>
+        <div id="kimKonular"></div>
+      </div>
+
+      <!-- FİZİK -->
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">⚡ Fizik</div><div class="card-sub" id="fizSub"></div></div>
+          <div class="progress-bar" style="width:120px"><div class="progress-fill" id="fizBar" style="width:0%"></div></div>
+        </div>
+        <div id="fizKonular"></div>
       </div>
     </div>
 
     <!-- DENEMELER -->
     <div id="page-deneme" class="page">
       <div class="page-header">
-        <h2>Deneme Takibi</h2>
-        <p>Net sonuçlarını gir, gelişimini izle</p>
+        <button class="back-btn" onclick="showPage('dashboard')">← Geri</button>
+        <div><h2>Deneme Takibi</h2><p>Net sonuçlarını gir</p></div>
       </div>
-
-      <div class="card" style="margin-bottom:16px">
+      <div class="card">
         <div class="card-title" style="margin-bottom:16px">Yeni Deneme Ekle</div>
         <div class="grid-2">
-          <div class="form-group">
-            <label>Tarih</label>
-            <input type="date" id="denTarih">
-          </div>
-          <div class="form-group">
-            <label>Deneme Adı</label>
-            <input type="text" id="denAd" placeholder="ör: TYT Deneme 3">
-          </div>
+          <div class="form-group"><label>Tarih</label><input type="date" id="denTarih"></div>
+          <div class="form-group"><label>Deneme Adı</label><input type="text" id="denAd" placeholder="ör: TYT Deneme 3"></div>
         </div>
         <div class="grid-3">
-          <div class="form-group">
-            <label>Türkçe Net</label>
-            <input type="number" id="denTur" placeholder="0" min="0" max="40" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>Matematik Net</label>
-            <input type="number" id="denMat" placeholder="0" min="0" max="40" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>Fen Net</label>
-            <input type="number" id="denFen" placeholder="0" min="0" max="20" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>Kimya Net</label>
-            <input type="number" id="denKim" placeholder="0" min="0" max="13" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>Fizik Net</label>
-            <input type="number" id="denFiz" placeholder="0" min="0" max="14" step="0.5">
-          </div>
-          <div class="form-group">
-            <label>Biyoloji Net</label>
-            <input type="number" id="denBio" placeholder="0" min="0" max="13" step="0.5">
-          </div>
+          <div class="form-group"><label>Türkçe Net</label><input type="number" id="denTur" placeholder="0" min="0" max="40" step="0.5"></div>
+          <div class="form-group"><label>Matematik Net</label><input type="number" id="denMat" placeholder="0" min="0" max="40" step="0.5"></div>
+          <div class="form-group"><label>Kimya Net</label><input type="number" id="denKim" placeholder="0" min="0" max="13" step="0.5"></div>
+          <div class="form-group"><label>Fizik Net</label><input type="number" id="denFiz" placeholder="0" min="0" max="14" step="0.5"></div>
+          <div class="form-group"><label>Biyoloji Net</label><input type="number" id="denBio" placeholder="0" min="0" max="13" step="0.5"></div>
+          <div class="form-group"><label>Sosyal Net</label><input type="number" id="denSos" placeholder="0" min="0" max="20" step="0.5"></div>
         </div>
-        <div class="form-group">
-          <label>Not (isteğe bağlı)</label>
-          <textarea id="denNot" placeholder="Bu denemede neler dikkatimi çekti..."></textarea>
-        </div>
+        <div class="form-group"><label>Not</label><textarea id="denNot" placeholder="Bu denemede dikkatimi çeken..."></textarea></div>
         <button class="btn btn-primary" onclick="denemeEkle()">Kaydet</button>
       </div>
-
       <div class="card">
         <div class="card-title" style="margin-bottom:16px">Deneme Geçmişi</div>
         <table>
-          <thead>
-            <tr>
-              <th>Tarih</th>
-              <th>Ad</th>
-              <th>Türkçe</th>
-              <th>Mat</th>
-              <th>Fen</th>
-              <th>Kim</th>
-              <th>Fiz</th>
-              <th>Bio</th>
-              <th></th>
-            </tr>
-          </thead>
+          <thead><tr><th>Tarih</th><th>Ad</th><th>Türkçe</th><th>Mat</th><th>Kim</th><th>Fiz</th><th>Bio</th><th></th></tr></thead>
           <tbody id="denemeTablo"></tbody>
         </table>
         <p id="denemeBos" style="color:var(--muted);font-size:14px;padding:12px 0">Henüz deneme girilmedi.</p>
@@ -596,47 +335,33 @@
     <!-- YANLIŞLAR -->
     <div id="page-yanlis" class="page">
       <div class="page-header">
-        <h2>Yanlış Takibi</h2>
-        <p>Hangi konularda takıldığını izle</p>
+        <button class="back-btn" onclick="showPage('dashboard')">← Geri</button>
+        <div><h2>Yanlış Takibi</h2><p>Hangi konularda takıldığını izle</p></div>
       </div>
-
-      <div class="card" style="margin-bottom:16px">
+      <div class="card">
         <div class="card-title" style="margin-bottom:16px">Yanlış Konu Ekle</div>
         <div class="grid-3">
           <div class="form-group">
             <label>Ders</label>
             <select id="yanlisDers">
-              <option>Matematik</option>
-              <option>Kimya</option>
-              <option>Fizik</option>
-              <option>Biyoloji</option>
-              <option>Türkçe</option>
-              <option>Diğer</option>
+              <option>Matematik</option><option>Kimya</option><option>Fizik</option><option>Biyoloji</option><option>Türkçe</option><option>Diğer</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Konu</label>
-            <input type="text" id="yanlisKonu" placeholder="ör: Türev uygulamaları">
-          </div>
-          <div class="form-group">
-            <label>Not</label>
-            <input type="text" id="yanlisNot" placeholder="Neden yanlış yaptım...">
-          </div>
+          <div class="form-group"><label>Konu</label><input type="text" id="yanlisKonu" placeholder="ör: Türev uygulamaları"></div>
+          <div class="form-group"><label>Not</label><input type="text" id="yanlisNot" placeholder="Neden yanlış yaptım..."></div>
         </div>
         <button class="btn btn-primary" onclick="yanlisEkle()">Ekle</button>
       </div>
-
       <div id="yanlisList"></div>
       <p id="yanlisBos" style="color:var(--muted);font-size:14px">Henüz yanlış girilmedi.</p>
     </div>
 
-    <!-- CLAUDE ANALİZ -->
+    <!-- ASISTAN -->
     <div id="page-claude" class="page">
       <div class="page-header">
-        <h2>Claude ile Analiz</h2>
-        <p>Deneme sonuçlarını, yanlışlarını veya sorularını yaz — analiz edelim</p>
+        <button class="back-btn" onclick="showPage('dashboard')">← Geri</button>
+        <div><h2>YKS Asistanı</h2><p>Sorularını, deneme sonuçlarını yaz — analiz edelim</p></div>
       </div>
-
       <div class="card">
         <div class="chat-area" id="chatArea">
           <div class="msg msg-ai">Merhaba Alp! 👋 Deneme sonuçlarını, yanlış konularını veya aklındaki soruları buraya yazabilirsin. YKS sürecinde sana yardımcı olmaya hazırım.</div>
@@ -645,30 +370,36 @@
           <input type="text" id="chatInput" placeholder="Mesajını yaz..." onkeydown="if(event.key==='Enter') sendChat()">
           <button class="btn btn-primary" onclick="sendChat()">Gönder</button>
         </div>
-        <p style="font-size:12px;color:var(--muted);margin-top:10px">İpucu: "Matematikten 8 net yaptım, ne yapmalıyım?" gibi sorular sorabilirsin.</p>
+        <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+          <button class="btn btn-secondary btn-sm" onclick="hizliSoru('Zayıf konularımı analiz et ve bu hafta ne çalışmalıyım?')">Haftalık analiz</button>
+          <button class="btn btn-secondary btn-sm" onclick="hizliSoru('Son denemelerimin trendi nasıl?')">Deneme trendi</button>
+          <button class="btn btn-secondary btn-sm" onclick="hizliSoru('YKS\'ye kaç günüm kaldı ve nasıl planlayayım?')">Plan öner</button>
+        </div>
       </div>
     </div>
 
   </main>
 </div>
 
-<!-- GÖREV EKLE MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="gorevModal">
   <div class="modal">
     <div class="modal-title">Görev Ekle</div>
+    <div class="form-group"><label>Görev Adı</label><input type="text" id="yeniGorevAd" placeholder="ör: 20 türev sorusu çöz"></div>
     <div class="form-group">
-      <label>Görev Adı</label>
-      <input type="text" id="yeniGorevAd" placeholder="ör: 20 türev sorusu çöz">
+      <label>Konu (isteğe bağlı)</label>
+      <input type="text" id="yeniGorevKonu" placeholder="ör: Türev uygulamaları">
     </div>
     <div class="form-group">
       <label>Ders</label>
       <select id="yeniGorevDers">
-        <option value="mat">Matematik</option>
-        <option value="kim">Kimya</option>
-        <option value="fiz">Fizik</option>
-        <option value="tyt">TYT</option>
-        <option value="den">Deneme</option>
-        <option value="mol">Mola</option>
+        <option value="mat">Matematik</option><option value="kim">Kimya</option><option value="fiz">Fizik</option><option value="tyt">TYT</option><option value="den">Deneme</option><option value="mol">Mola</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Süre</label>
+      <select id="yeniGorevSure">
+        <option>30 dk</option><option>45 dk</option><option>1 saat</option><option>1.5 saat</option><option>2 saat</option>
       </select>
     </div>
     <div class="modal-footer">
@@ -679,21 +410,63 @@
 </div>
 
 <script>
-// ==================== STATE ====================
 const GUNLER = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const YKS_TARIHI = new Date('2026-06-22');
 
-let state = JSON.parse(localStorage.getItem('alpYKS') || 'null') || {
-  gorevler: {}, // { "2024-01-15": [{id,ad,ders,done}] }
-  denemeler: [],
-  yanlislar: [],
+// ==================== KONU VERİTABANI ====================
+const KONULAR_DB = {
+  mat: [
+    { id:'mat_pol', ad:'Polinomlar', durum:'bitti', altKonular:['Polinom Kavramı','Bölme & Çarpanlara Ayırma','Özdeşlikler'] },
+    { id:'mat_esit', ad:'Eşitsizlikler', durum:'bitti', altKonular:['1. Derece Eşitsizlik','Mutlak Değer','Quadratic Eşitsizlik'] },
+    { id:'mat_2der', ad:'2. Dereceden Denklemler', durum:'bitti', altKonular:['Kök Formülü','Vieta Bağıntıları','Diskriminant'] },
+    { id:'mat_par', ad:'Parabol', durum:'bitti', altKonular:['Tepe Noktası','Grafik Çizimi','Uygulamalar'] },
+    { id:'mat_tur', ad:'Türev (Temel)', durum:'devam', altKonular:['Limit Tanımı','Türev Kuralları','Zincir Kuralı','Çarpım & Bölüm'] },
+    { id:'mat_turuygul', ad:'Türev Uygulamaları', durum:'baslamadi', altKonular:['Artan-Azalan','Ekstremum','Grafik Çizimi','Optimizasyon'] },
+    { id:'mat_int', ad:'İntegral (Temel)', durum:'devam', altKonular:['Belirsiz İntegral','Temel Formüller','Değişken Dönüşümü'] },
+    { id:'mat_intbel', ad:'Belirli İntegral', durum:'baslamadi', altKonular:['Newton-Leibniz','Alan Hesabı','Hacim'] },
+    { id:'mat_anageo', ad:'Analitik Geometri', durum:'baslamadi', altKonular:['Doğru Denklemi','Çember','Elips','Hiperbol','Parabolün Odağı'] },
+    { id:'mat_trig', ad:'Trigonometri', durum:'baslamadi', altKonular:['Temel Kavramlar','Özdeşlikler','Denklemler','Ters Trigonometri'] },
+    { id:'mat_olas', ad:'Olasılık & İstatistik', durum:'baslamadi', altKonular:['Permütasyon','Kombinasyon','Binom Dağılımı','Ortalama & Std'] },
+    { id:'mat_kar', ad:'Karmaşık Sayılar', durum:'baslamadi', altKonular:['Tanım','İşlemler','Modül & Argüman','Polar Form'] },
+  ],
+  kim: [
+    { id:'kim_atom', ad:'Atom Yapısı', durum:'bitti', altKonular:['Dalton-Bohr Modeli','Kuantum Sayıları','Elektron Dizilimi','Orbital'] },
+    { id:'kim_peri', ad:'Periyodik Tablo', durum:'bitti', altKonular:['Periyodik Özellikler','Atom Yarıçapı','İyonlaşma Enerjisi','Elektronegatiflik'] },
+    { id:'kim_bag', ad:'Kimyasal Bağlar', durum:'bitti', altKonular:['İyonik Bağ','Kovalent Bağ','Metalik Bağ','Moleküller Arası Kuvvetler'] },
+    { id:'kim_mol', ad:'Mol Hesabı', durum:'bitti', altKonular:['Mol Kavramı','Kütlesel Hesap','Hacimsel Hesap','Mol Oranları'] },
+    { id:'kim_elek', ad:'Elektrokimya', durum:'bitti', altKonular:['Redoks','Elektroliz','Galvanik Pil','Faraday Yasaları'] },
+    { id:'kim_gaz', ad:'Gaz Yasaları', durum:'baslamadi', altKonular:['İdeal Gaz','Boyle-Charles','Dalton Basınç','Gerçek Gazlar'] },
+    { id:'kim_asit', ad:'Asit-Baz', durum:'baslamadi', altKonular:['Brønsted-Lowry','pH Hesabı','Tampon Çözelti','Titrasyon'] },
+    { id:'kim_denge', ad:'Kimyasal Denge', durum:'baslamadi', altKonular:['Denge Sabiti','Le Chatelier','Ksp','Çözünürlük'] },
+    { id:'kim_termo', ad:'Termokimya', durum:'baslamadi', altKonular:['Entalpi','Hess Yasası','Entropi','Gibbs Enerjisi'] },
+    { id:'kim_org', ad:'Organik Kimya', durum:'baslamadi', altKonular:['Hidrokarbonlar','Fonksiyonel Gruplar','İzomerlik','Reaksiyonlar'] },
+  ],
+  fiz: [
+    { id:'fiz_kinematik', ad:'Kuvvet & Hareket', durum:'bitti', altKonular:['Kinematik','Newton Yasaları','Sürtünme','Eğik Düzlem','Atış Hareketi'] },
+    { id:'fiz_enerji', ad:'Enerji & İş', durum:'baslamadi', altKonular:['İş Kavramı','Kinetik Enerji','Potansiyel Enerji','Güç','Enerji Korunumu'] },
+    { id:'fiz_ivme', ad:'Dairesel Hareket & İtme', durum:'baslamadi', altKonular:['Açısal Hız','Merkezcil İvme','İmpuls','Momentum Korunumu'] },
+    { id:'fiz_basinc', ad:'Basınç & Akışkanlar', durum:'baslamadi', altKonular:['Pascal','Archimedes','Bernoulli','Kapiler Etki'] },
+    { id:'fiz_termo', ad:'Termodinamik', durum:'baslamadi', altKonular:['Sıcaklık & Isı','Isı Transferi','Gazlarda Termodinamik','Carnot Çevrimi'] },
+    { id:'fiz_elek', ad:'Elektrik & Manyetizma', durum:'baslamadi', altKonular:['Coulomb','Elektrik Alan','Kondansatör','Ohm','Manyetik Alan','Faraday'] },
+    { id:'fiz_dalga', ad:'Dalgalar & Optik', durum:'baslamadi', altKonular:['Dalga Özellikleri','Ses Dalgaları','Yansıma-Kırılma','Mercekler','Girişim'] },
+    { id:'fiz_modern', ad:'Modern Fizik', durum:'baslamadi', altKonular:['Fotoelektrik','Compton','De Broglie','Nükleer Fizik','Radyoaktivite'] },
+  ],
 };
 
-let currentDayOffset = 0; // 0 = bugün
+let state = JSON.parse(localStorage.getItem('alpYKS_v2') || 'null') || {
+  gorevler: {},
+  denemeler: [],
+  yanlislar: [],
+  konular: JSON.parse(JSON.stringify(KONULAR_DB)),
+};
 
-function save() {
-  localStorage.setItem('alpYKS', JSON.stringify(state));
-}
+// Eğer konular yoksa ekle
+if (!state.konular) state.konular = JSON.parse(JSON.stringify(KONULAR_DB));
+
+let currentDayOffset = 0;
+let pageHistory = ['dashboard'];
+
+function save() { localStorage.setItem('alpYKS_v2', JSON.stringify(state)); }
 
 function todayKey(offset = 0) {
   const d = new Date();
@@ -701,17 +474,17 @@ function todayKey(offset = 0) {
   return d.toISOString().split('T')[0];
 }
 
-// ==================== NAVIGATION ====================
-function showPage(id) {
+// ==================== NAVİGASYON ====================
+function showPage(id, addHistory = true) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
-  event.currentTarget && event.currentTarget.classList.add('active');
-  // find nav item
   document.querySelectorAll('.nav-item').forEach(n => {
     if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) n.classList.add('active');
   });
+  if (addHistory && pageHistory[pageHistory.length - 1] !== id) pageHistory.push(id);
   renderAll();
+  window.scrollTo(0, 0);
 }
 
 // ==================== COUNTDOWN ====================
@@ -722,72 +495,72 @@ function renderCountdown() {
   const el2 = document.getElementById('sidebarCountdown');
   if (el1) el1.textContent = diff > 0 ? diff : '0';
   if (el2) el2.textContent = (diff > 0 ? diff : 0) + ' gün kaldı';
-
   const tarihEl = document.getElementById('bugunTarih');
-  if (tarihEl) {
-    const gun = GUNLER[now.getDay()];
-    tarihEl.textContent = gun + ', ' + now.toLocaleDateString('tr-TR', { day:'numeric', month:'long', year:'numeric' });
-  }
+  if (tarihEl) tarihEl.textContent = GUNLER[now.getDay()] + ', ' + now.toLocaleDateString('tr-TR', {day:'numeric', month:'long', year:'numeric'});
 }
 
 // ==================== PLAN ====================
 function getDefaultGorevler(key) {
-  const d = new Date(key);
-  const gun = d.getDay(); // 0=pazar
+  const d = new Date(key + 'T12:00:00');
+  const gun = d.getDay();
   const planlar = {
-    1: [ // pazartesi
-      {ad:'Matematik soru çöz (20 soru)', ders:'mat'},
-      {ad:'Kimya konu tekrarı', ders:'kim'},
-      {ad:'Mola', ders:'mol'},
-      {ad:'Matematik yanlış analizi', ders:'mat'},
+    1: [
+      {ad:'Matematik — Türev Uygulamaları', konu:'Artan-azalan fonksiyon soruları', ders:'mat', sure:'1 saat'},
+      {ad:'Matematik — Soru Çözme', konu:'20 adet karma soru', ders:'mat', sure:'45 dk'},
+      {ad:'Kimya — Gaz Yasaları', konu:'İdeal gaz & Boyle-Charles konu tekrarı', ders:'kim', sure:'1 saat'},
+      {ad:'Mola', konu:'', ders:'mol', sure:'15 dk'},
+      {ad:'Kimya — Soru Çözme', konu:'Gaz yasaları soruları', ders:'kim', sure:'45 dk'},
     ],
-    2: [ // salı
-      {ad:'Fizik soru çöz (15 soru)', ders:'fiz'},
-      {ad:'Matematik (20 soru)', ders:'mat'},
-      {ad:'Mola', ders:'mol'},
-      {ad:'Kimya konu tekrarı', ders:'kim'},
+    2: [
+      {ad:'Fizik — Enerji & İş', konu:'İş-enerji teoremi konu anlatımı', ders:'fiz', sure:'1 saat'},
+      {ad:'Fizik — Soru Çözme', konu:'15 adet enerji sorusu', ders:'fiz', sure:'45 dk'},
+      {ad:'Matematik — İntegral', konu:'Belirli integral & alan hesabı', ders:'mat', sure:'1 saat'},
+      {ad:'Mola', konu:'', ders:'mol', sure:'15 dk'},
+      {ad:'TYT — Karma Soru', konu:'TYT matematik & fen mix', ders:'tyt', sure:'45 dk'},
     ],
-    3: [ // çarşamba
-      {ad:'Kimya soru çöz (20 soru)', ders:'kim'},
-      {ad:'Fizik formül tekrarı', ders:'fiz'},
-      {ad:'Mola', ders:'mol'},
-      {ad:'TYT karma soru', ders:'tyt'},
+    3: [
+      {ad:'Kimya — Asit-Baz', konu:'pH hesabı & tampon çözelti', ders:'kim', sure:'1 saat'},
+      {ad:'Kimya — Soru Çözme', konu:'Asit-baz soruları', ders:'kim', sure:'45 dk'},
+      {ad:'Fizik — Basınç & Akışkanlar', konu:'Pascal & Archimedes', ders:'fiz', sure:'1 saat'},
+      {ad:'Mola', konu:'', ders:'mol', sure:'15 dk'},
+      {ad:'Matematik — Analitik Geometri', konu:'Doğru denklemi & çember', ders:'mat', sure:'1 saat'},
     ],
-    4: [ // perşembe
-      {ad:'Matematik soru çöz (25 soru)', ders:'mat'},
-      {ad:'Kimya (20 soru)', ders:'kim'},
-      {ad:'Mola', ders:'mol'},
-      {ad:'Fizik soru çöz', ders:'fiz'},
+    4: [
+      {ad:'Matematik — Trigonometri', konu:'Temel kavramlar & birim çember', ders:'mat', sure:'1 saat'},
+      {ad:'Matematik — Soru Çözme', konu:'25 karma matematik sorusu', ders:'mat', sure:'1 saat'},
+      {ad:'Kimya — Kimyasal Denge', konu:'Kc, Kp ve Le Chatelier', ders:'kim', sure:'1 saat'},
+      {ad:'Mola', konu:'', ders:'mol', sure:'15 dk'},
+      {ad:'Fizik — Elektrik', konu:'Coulomb yasası & elektrik alan', ders:'fiz', sure:'45 dk'},
     ],
-    5: [ // cuma
-      {ad:'Fizik soru çöz (15 soru)', ders:'fiz'},
-      {ad:'Matematik (20 soru)', ders:'mat'},
-      {ad:'Mola', ders:'mol'},
-      {ad:'TYT karma tekrar', ders:'tyt'},
+    5: [
+      {ad:'Kimya — Organik Kimya', konu:'Hidrokarbonlar & fonksiyonel gruplar', ders:'kim', sure:'1 saat'},
+      {ad:'Matematik — Olasılık', konu:'Permütasyon & kombinasyon', ders:'mat', sure:'1 saat'},
+      {ad:'Fizik — Soru Çözme', konu:'Karma fizik soruları', ders:'fiz', sure:'45 dk'},
+      {ad:'Mola', konu:'', ders:'mol', sure:'15 dk'},
+      {ad:'TYT — Genel Tekrar', konu:'Tüm TYT konuları karma', ders:'tyt', sure:'1 saat'},
     ],
-    6: [ // cumartesi
-      {ad:'Tam deneme çöz', ders:'den'},
-      {ad:'Deneme analizi (yanlışlara bak)', ders:'den'},
-      {ad:'Zayıf konu tekrarı', ders:'mat'},
+    6: [
+      {ad:'TAM DENEME ÇÖZ', konu:'Sabah — TYT veya AYT denemesi', ders:'den', sure:'3 saat'},
+      {ad:'Deneme Analizi', konu:'Yanlışları tek tek incele & not al', ders:'den', sure:'1.5 saat'},
+      {ad:'Zayıf Konu Tekrarı', konu:'Analizden çıkan zayıf konuya odaklan', ders:'mat', sure:'1 saat'},
     ],
-    0: [ // pazar
-      {ad:'Hafif tekrar (1 saat)', ders:'tyt'},
-      {ad:'Dinlenme & motivasyon', ders:'mol'},
+    0: [
+      {ad:'Hafif Tekrar', konu:'Bu haftanın konularını gözden geçir', ders:'tyt', sure:'1 saat'},
+      {ad:'Dinlenme', konu:'Motivasyon & ruh hali için', ders:'mol', sure:'—'},
     ],
   };
   return (planlar[gun] || []).map((g, i) => ({
     id: key + '_' + i,
     ad: g.ad,
+    konu: g.konu,
     ders: g.ders,
+    sure: g.sure,
     done: false,
   }));
 }
 
 function ensureGorevler(key) {
-  if (!state.gorevler[key]) {
-    state.gorevler[key] = getDefaultGorevler(key);
-    save();
-  }
+  if (!state.gorevler[key]) { state.gorevler[key] = getDefaultGorevler(key); save(); }
 }
 
 function renderPlan() {
@@ -802,73 +575,126 @@ function renderPlan() {
   gorevler.forEach(g => {
     const el = document.createElement('div');
     el.className = 'task-item' + (g.done ? ' done' : '');
-    el.onclick = () => toggleGorev(key, g.id);
     el.innerHTML = `
-      <div class="task-check">${g.done ? '✓' : ''}</div>
-      <div class="task-text">${g.ad}</div>
+      <div class="task-check" onclick="toggleGorev('${key}','${g.id}')">${g.done ? '✓' : ''}</div>
+      <div style="flex:1" onclick="toggleGorev('${key}','${g.id}')">
+        <div class="task-text">${g.ad}</div>
+        ${g.konu ? `<div class="task-detail">${g.konu}</div>` : ''}
+      </div>
+      ${g.sure ? `<span style="font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;white-space:nowrap">${g.sure}</span>` : ''}
       <span class="task-tag tag-${g.ders}">${g.ders.toUpperCase()}</span>
-      <button onclick="event.stopPropagation();silGorev('${key}','${g.id}')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;padding:0 4px" title="Sil">×</button>
+      <button onclick="silGorev('${key}','${g.id}')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:0 4px;line-height:1">×</button>
     `;
     list.appendChild(el);
   });
-
   renderHaftaGrid();
 }
 
 function toggleGorev(key, id) {
-  const g = state.gorevler[key].find(x => x.id === id);
+  const g = state.gorevler[key] && state.gorevler[key].find(x => x.id === id);
   if (g) { g.done = !g.done; save(); renderAll(); }
 }
 
 function silGorev(key, id) {
-  state.gorevler[key] = state.gorevler[key].filter(x => x.id !== id);
-  save(); renderAll();
+  if (state.gorevler[key]) { state.gorevler[key] = state.gorevler[key].filter(x => x.id !== id); save(); renderAll(); }
 }
 
 function prevDay() { currentDayOffset--; renderPlan(); }
 function nextDay() { currentDayOffset++; renderPlan(); }
 
-function openGorevModal() {
-  document.getElementById('gorevModal').classList.add('open');
-  document.getElementById('yeniGorevAd').value = '';
-}
-
-function closeGorevModal() {
-  document.getElementById('gorevModal').classList.remove('open');
-}
+function openGorevModal() { document.getElementById('gorevModal').classList.add('open'); document.getElementById('yeniGorevAd').value = ''; document.getElementById('yeniGorevKonu').value = ''; }
+function closeGorevModal() { document.getElementById('gorevModal').classList.remove('open'); }
 
 function gorevEkle() {
   const ad = document.getElementById('yeniGorevAd').value.trim();
-  const ders = document.getElementById('yeniGorevDers').value;
   if (!ad) return;
   const key = todayKey(currentDayOffset);
   ensureGorevler(key);
-  state.gorevler[key].push({ id: key + '_' + Date.now(), ad, ders, done: false });
+  state.gorevler[key].push({
+    id: key + '_' + Date.now(),
+    ad,
+    konu: document.getElementById('yeniGorevKonu').value.trim(),
+    ders: document.getElementById('yeniGorevDers').value,
+    sure: document.getElementById('yeniGorevSure').value,
+    done: false,
+  });
   save(); closeGorevModal(); renderAll();
 }
 
 function renderHaftaGrid() {
   const grid = document.getElementById('haftaGrid');
+  if (!grid) return;
   grid.innerHTML = '';
+  const bugunGun = new Date().getDay();
   for (let i = 0; i < 7; i++) {
-    const off = i - new Date().getDay();
+    const off = i - bugunGun;
     const key = todayKey(off);
     ensureGorevler(key);
-    const gorevler = state.gorevler[key];
-    const total = gorevler.length;
-    const done = gorevler.filter(g => g.done).length;
+    const g = state.gorevler[key];
+    const total = g.length, done = g.filter(x => x.done).length;
     const pct = total ? Math.round(done / total * 100) : 0;
     const d = new Date(key + 'T12:00:00');
     const isToday = off === 0;
     grid.innerHTML += `
       <div style="text-align:center">
         <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px">${GUNLER[d.getDay()].slice(0,3).toUpperCase()}</div>
-        <div style="width:40px;height:40px;border-radius:50%;background:${pct === 100 ? 'var(--accent)' : pct > 0 ? 'var(--accent-light)' : 'var(--bg)'};border:2px solid ${isToday ? 'var(--accent)' : 'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:11px;font-family:'DM Mono',monospace;color:${pct===100?'white':'var(--muted)'}">
-          ${pct}%
-        </div>
+        <div style="width:40px;height:40px;border-radius:50%;background:${pct===100?'var(--accent)':pct>0?'var(--accent-light)':'var(--bg)'};border:2px solid ${isToday?'var(--accent)':'var(--border)'};display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:11px;font-family:'DM Mono',monospace;color:${pct===100?'white':'var(--muted)'}">${pct}%</div>
+        ${isToday ? '<div style="font-size:10px;color:var(--accent);margin-top:4px;font-weight:600">Bugün</div>' : ''}
       </div>
     `;
   }
+}
+
+// ==================== KONULAR ====================
+function konuDurumSikla(ders, id) {
+  const konu = state.konular[ders].find(k => k.id === id);
+  if (!konu) return;
+  const sira = ['baslamadi', 'devam', 'bitti'];
+  const idx = sira.indexOf(konu.durum);
+  konu.durum = sira[(idx + 1) % 3];
+  save(); renderKonular(); renderDashboard();
+}
+
+function altKonuToggle(ders, konuId, altKonu) {
+  const konu = state.konular[ders].find(k => k.id === konuId);
+  if (!konu) return;
+  if (!konu.altDone) konu.altDone = {};
+  konu.altDone[altKonu] = !konu.altDone[altKonu];
+  save(); renderKonular();
+}
+
+function renderKonular() {
+  ['mat', 'kim', 'fiz'].forEach(ders => {
+    const konular = state.konular[ders];
+    const bitti = konular.filter(k => k.durum === 'bitti').length;
+    const pct = Math.round(bitti / konular.length * 100);
+    const subEl = document.getElementById(ders + 'Sub');
+    const barEl = document.getElementById(ders + 'Bar');
+    if (subEl) subEl.textContent = bitti + '/' + konular.length + ' konu tamamlandı (' + pct + '%)';
+    if (barEl) barEl.style.width = pct + '%';
+
+    const container = document.getElementById(ders + 'Konular');
+    if (!container) return;
+    container.innerHTML = '';
+    konular.forEach(k => {
+      const durumLabel = k.durum === 'bitti' ? '✓ Bitti' : k.durum === 'devam' ? '→ Devam' : '✕ Başlamadı';
+      const durumClass = k.durum === 'bitti' ? 'durum-bitti' : k.durum === 'devam' ? 'durum-devam' : 'durum-baslamadi';
+      const altHTML = (k.altKonular || []).map(ak => {
+        const done = k.altDone && k.altDone[ak];
+        const cls = done ? 'done' : (k.durum === 'devam' ? 'devam' : '');
+        return `<span class="alt-konu ${cls}" onclick="altKonuToggle('${ders}','${k.id}','${ak}')">${ak}</span>`;
+      }).join('');
+      container.innerHTML += `
+        <div class="konu-card">
+          <div class="konu-header">
+            <div class="konu-name">${k.ad}</div>
+            <button class="konu-durum ${durumClass}" onclick="konuDurumSikla('${ders}','${k.id}')">${durumLabel}</button>
+          </div>
+          ${altHTML ? `<div class="konu-alt">${altHTML}</div>` : ''}
+        </div>
+      `;
+    });
+  });
 }
 
 // ==================== DASHBOARD ====================
@@ -876,42 +702,49 @@ function renderDashboard() {
   const key = todayKey();
   ensureGorevler(key);
   const gorevler = state.gorevler[key];
-  const total = gorevler.length;
-  const done = gorevler.filter(g => g.done).length;
-
+  const total = gorevler.length, done = gorevler.filter(g => g.done).length;
   document.getElementById('statBugun').textContent = done;
+  document.getElementById('statBugunSub').textContent = '/ ' + total + ' görev';
   document.getElementById('bugunBar').style.width = (total ? done/total*100 : 0) + '%';
   document.getElementById('statDeneme').textContent = state.denemeler.length;
-  document.getElementById('statYanlis').textContent = state.yanlislar.length;
+
+  // Konu istatistiği
+  const tumKonular = [...state.konular.mat, ...state.konular.kim, ...state.konular.fiz];
+  const bitti = tumKonular.filter(k => k.durum === 'bitti').length;
+  const pct = Math.round(bitti / tumKonular.length * 100);
+  document.getElementById('statKonu').textContent = pct + '%';
+  document.getElementById('konuBar').style.width = pct + '%';
+
   document.getElementById('dashPlanSub').textContent = done + '/' + total + ' görev tamamlandı';
 
-  // mini plan
+  // Mini plan
   const dashList = document.getElementById('dashPlanList');
   dashList.innerHTML = '';
-  gorevler.slice(0,4).forEach(g => {
+  gorevler.slice(0, 4).forEach(g => {
     const el = document.createElement('div');
     el.className = 'task-item' + (g.done ? ' done' : '');
     el.onclick = () => { toggleGorev(key, g.id); };
     el.innerHTML = `
       <div class="task-check">${g.done ? '✓' : ''}</div>
-      <div class="task-text">${g.ad}</div>
+      <div style="flex:1">
+        <div class="task-text">${g.ad}</div>
+        ${g.konu ? `<div class="task-detail">${g.konu}</div>` : ''}
+      </div>
       <span class="task-tag tag-${g.ders}">${g.ders.toUpperCase()}</span>
     `;
     dashList.appendChild(el);
   });
 
-  // son denemeler
-  const dashDen = document.getElementById('dashDenemeler');
-  if (state.denemeler.length === 0) {
-    dashDen.innerHTML = '<p style="color:var(--muted);font-size:14px">Henüz deneme girilmedi.</p>';
+  // Zayıf konular
+  const dashZayif = document.getElementById('dashZayif');
+  const zayiflar = tumKonular.filter(k => k.durum === 'baslamadi').slice(0, 5);
+  if (zayiflar.length === 0) {
+    dashZayif.innerHTML = '<p style="color:var(--muted);font-size:14px">Tüm konular başlandı! 🎉</p>';
   } else {
-    dashDen.innerHTML = state.denemeler.slice(-3).reverse().map(d => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
-        <div>
-          <div style="font-size:14px;font-weight:500">${d.ad}</div>
-          <div style="font-size:12px;color:var(--muted)">${d.tarih}</div>
-        </div>
-        <div style="font-family:'DM Mono',monospace;font-size:14px">Mat: ${d.mat || '—'} / Kim: ${d.kim || '—'}</div>
+    dashZayif.innerHTML = zayiflar.map(k => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="font-size:14px">${k.ad}</div>
+        <span class="badge badge-bad">Başlamadı</span>
       </div>
     `).join('');
   }
@@ -923,86 +756,67 @@ function denemeEkle() {
   const ad = document.getElementById('denAd').value.trim();
   if (!tarih || !ad) { alert('Tarih ve ad zorunlu!'); return; }
   state.denemeler.push({
-    id: Date.now(),
-    tarih, ad,
+    id: Date.now(), tarih, ad,
     tur: document.getElementById('denTur').value,
     mat: document.getElementById('denMat').value,
-    fen: document.getElementById('denFen').value,
     kim: document.getElementById('denKim').value,
     fiz: document.getElementById('denFiz').value,
     bio: document.getElementById('denBio').value,
+    sos: document.getElementById('denSos').value,
     not: document.getElementById('denNot').value,
   });
   save();
-  // clear
-  ['denTarih','denAd','denTur','denMat','denFen','denKim','denFiz','denBio','denNot'].forEach(id => document.getElementById(id).value = '');
+  ['denTarih','denAd','denTur','denMat','denKim','denFiz','denBio','denSos','denNot'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  document.getElementById('denTarih').value = todayKey();
   renderDenemeler();
 }
 
 function denemeRenk(net, max) {
-  const pct = net / max;
-  if (pct >= 0.7) return 'badge-good';
-  if (pct >= 0.4) return 'badge-mid';
-  return 'badge-bad';
+  if (!net) return '';
+  const pct = parseFloat(net) / max;
+  return pct >= 0.7 ? 'badge-good' : pct >= 0.4 ? 'badge-mid' : 'badge-bad';
 }
 
 function renderDenemeler() {
   const tbody = document.getElementById('denemeTablo');
   const bos = document.getElementById('denemeBos');
-  if (state.denemeler.length === 0) {
-    tbody.innerHTML = '';
-    bos.style.display = 'block';
-    return;
-  }
+  if (!tbody) return;
+  if (state.denemeler.length === 0) { tbody.innerHTML = ''; bos.style.display = 'block'; return; }
   bos.style.display = 'none';
   tbody.innerHTML = state.denemeler.slice().reverse().map(d => `
     <tr>
-      <td style="font-family:'DM Mono',monospace;font-size:13px">${d.tarih}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:12px">${d.tarih}</td>
       <td style="font-weight:500">${d.ad}</td>
-      <td><span class="badge ${denemeRenk(d.tur,40)}">${d.tur||'—'}</span></td>
-      <td><span class="badge ${denemeRenk(d.mat,40)}">${d.mat||'—'}</span></td>
-      <td><span class="badge ${denemeRenk(d.fen,20)}">${d.fen||'—'}</span></td>
-      <td><span class="badge ${denemeRenk(d.kim,13)}">${d.kim||'—'}</span></td>
-      <td><span class="badge ${denemeRenk(d.fiz,14)}">${d.fiz||'—'}</span></td>
-      <td><span class="badge ${denemeRenk(d.bio,13)}">${d.bio||'—'}</span></td>
-      <td><button class="btn btn-danger" style="font-size:12px;padding:4px 10px" onclick="denSil(${d.id})">Sil</button></td>
+      <td>${d.tur ? `<span class="badge ${denemeRenk(d.tur,40)}">${d.tur}</span>` : '—'}</td>
+      <td>${d.mat ? `<span class="badge ${denemeRenk(d.mat,40)}">${d.mat}</span>` : '—'}</td>
+      <td>${d.kim ? `<span class="badge ${denemeRenk(d.kim,13)}">${d.kim}</span>` : '—'}</td>
+      <td>${d.fiz ? `<span class="badge ${denemeRenk(d.fiz,14)}">${d.fiz}</span>` : '—'}</td>
+      <td>${d.bio ? `<span class="badge ${denemeRenk(d.bio,13)}">${d.bio}</span>` : '—'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="denSil(${d.id})">Sil</button></td>
     </tr>
   `).join('');
 }
 
-function denSil(id) {
-  state.denemeler = state.denemeler.filter(d => d.id !== id);
-  save(); renderDenemeler(); renderDashboard();
-}
+function denSil(id) { state.denemeler = state.denemeler.filter(d => d.id !== id); save(); renderDenemeler(); renderDashboard(); }
 
 // ==================== YANLIŞLAR ====================
 function yanlisEkle() {
   const konu = document.getElementById('yanlisKonu').value.trim();
   if (!konu) return;
-  state.yanlislar.push({
-    id: Date.now(),
-    ders: document.getElementById('yanlisDers').value,
-    konu,
-    not: document.getElementById('yanlisNot').value,
-    tarih: new Date().toLocaleDateString('tr-TR'),
-  });
+  state.yanlislar.push({ id: Date.now(), ders: document.getElementById('yanlisDers').value, konu, not: document.getElementById('yanlisNot').value, tarih: new Date().toLocaleDateString('tr-TR') });
   save();
   document.getElementById('yanlisKonu').value = '';
   document.getElementById('yanlisNot').value = '';
   renderYanlislar();
 }
 
-function yanlisSil(id) {
-  state.yanlislar = state.yanlislar.filter(y => y.id !== id);
-  save(); renderYanlislar(); renderDashboard();
-}
+function yanlisSil(id) { state.yanlislar = state.yanlislar.filter(y => y.id !== id); save(); renderYanlislar(); }
 
 function renderYanlislar() {
   const list = document.getElementById('yanlisList');
   const bos = document.getElementById('yanlisBos');
-  if (state.yanlislar.length === 0) {
-    list.innerHTML = ''; bos.style.display = 'block'; return;
-  }
+  if (!list) return;
+  if (state.yanlislar.length === 0) { list.innerHTML = ''; bos.style.display = 'block'; return; }
   bos.style.display = 'none';
   list.innerHTML = state.yanlislar.slice().reverse().map(y => `
     <div class="yanlis-item">
@@ -1016,44 +830,50 @@ function renderYanlislar() {
   `).join('');
 }
 
-// ==================== CLAUDE CHAT ====================
+// ==================== ASISTAN ====================
 async function sendChat() {
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if (!msg) return;
   input.value = '';
-
   appendMsg(msg, 'user');
   const loadingEl = appendMsg('Düşünüyorum...', 'ai', true);
 
-  // Bağlam: deneme ve yanlış verilerini Claude'a gönder
-  const context = `
-Sen YKS'ye hazırlanan 18 yaşındaki Alp'in kişisel çalışma asistanısın. Türkçe konuş. Eczacılık hedefliyor, AYT Sayısal ağırlıklı çalışıyor. Zor dersleri: Matematik, Kimya, Fizik. YKS'ye ~1-2 ay kaldı.
+  const tumKonular = [...state.konular.mat, ...state.konular.kim, ...state.konular.fiz];
+  const bitti = tumKonular.filter(k => k.durum === 'bitti').map(k => k.ad);
+  const devam = tumKonular.filter(k => k.durum === 'devam').map(k => k.ad);
+  const baslamadi = tumKonular.filter(k => k.durum === 'baslamadi').map(k => k.ad);
 
-Mevcut deneme verileri: ${JSON.stringify(state.denemeler.slice(-5))}
-Takip edilen yanlış konular: ${JSON.stringify(state.yanlislar.slice(-10))}
+  const context = `Sen YKS'ye hazırlanan 18 yaşındaki Alp'in kişisel çalışma asistanısın. Türkçe konuş. Eczacılık hedefliyor, AYT Sayısal çalışıyor. YKS tarihi: 22 Haziran 2026.
 
-Kısa, net ve motive edici cevaplar ver. Somut tavsiyeler sun.
-  `.trim();
+Konu durumu:
+- Bitti: ${bitti.join(', ')}
+- Devam: ${devam.join(', ')}
+- Başlamadı: ${baslamadi.join(', ')}
+
+Son denemeler: ${JSON.stringify(state.denemeler.slice(-3))}
+Yanlış konular: ${JSON.stringify(state.yanlislar.slice(-5))}
+
+Kısa, net, motive edici cevap ver. Somut tavsiye sun.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: context,
-        messages: [{ role: 'user', content: msg }],
-      }),
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, system: context, messages: [{ role: 'user', content: msg }] }),
     });
     const data = await res.json();
     const reply = data.content?.map(c => c.text || '').join('') || 'Cevap alınamadı.';
     loadingEl.textContent = reply;
     loadingEl.classList.remove('loading');
-  } catch (e) {
-    loadingEl.textContent = 'Bağlantı hatası. İnternet bağlantını kontrol et.';
+  } catch(e) {
+    loadingEl.textContent = '⚠️ Bağlantı hatası. API key gerekiyor olabilir.';
   }
+}
+
+function hizliSoru(soru) {
+  document.getElementById('chatInput').value = soru;
+  sendChat();
 }
 
 function appendMsg(text, who, loading = false) {
@@ -1071,14 +891,14 @@ function renderAll() {
   renderCountdown();
   renderDashboard();
   renderPlan();
+  renderKonular();
   renderDenemeler();
   renderYanlislar();
 }
 
-// ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
-  // set today's date as default for deneme
-  document.getElementById('denTarih').value = todayKey();
+  const denTarih = document.getElementById('denTarih');
+  if (denTarih) denTarih.value = todayKey();
   renderAll();
   setInterval(renderCountdown, 60000);
 });
