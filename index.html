@@ -150,13 +150,14 @@ tr:hover td { background: var(--bg); }
 <div class="app">
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-logo"><h1>Alp / YKS</h1><span id="sidebarCountdown">— gün kaldı</span></div>
-  <div class="nav-item active" onclick="showPage('dashboard')"><span>◈</span> Dashboard</div>
-  <div class="nav-item" onclick="showPage('plan')"><span>◷</span> Günlük Plan</div>
-  <div class="nav-item" onclick="showPage('konular')"><span>◉</span> Konular</div>
-  <div class="nav-item" onclick="showPage('videolar')"><span>▶</span> Videolar</div>
-  <div class="nav-item" onclick="showPage('deneme')"><span>◻</span> Denemeler</div>
-  <div class="nav-item" onclick="showPage('yanlis')"><span>◬</span> Yanlışlar</div>
-  <div class="nav-item" onclick="showPage('asistan')"><span>◆</span> Asistan</div>
+  <div class="nav-item active" onclick="showPage('dashboard')"><span>❇️</span> Dashboard</div>
+  <div class="nav-item" onclick="showPage('plan')"><span></span> Günlük Plan</div>
+  <div class="nav-item" onclick="showPage('konular')"><span></span> Konular</div>
+  <div class="nav-item" onclick="showPage('videolar')"><span></span> Videolar</div>
+  <div class="nav-item" onclick="showPage('deneme')"><span></span> Denemeler</div>
+  <div class="nav-item" onclick="showPage('yanlis')"><span></span> Yanlışlar</div>
+  <div class="nav-item" onclick="showPage('asistan')"><span></span> Asistan</div>
+  <div class="nav-item" onclick="showPage('ayarlar')"><span></span> Ayarlar</div>
 </nav>
 <main class="main">
 
@@ -306,6 +307,33 @@ tr:hover td { background: var(--bg); }
   </div>
   <div id="yanlisList"></div>
   <p id="yanlisBos" style="color:var(--muted);font-size:14px">Henüz yanlış girilmedi.</p>
+</div>
+
+<!-- AYARLAR -->
+
+<div id="page-ayarlar" class="page">
+  <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>⚙️ Ayarlar</h2><p>API key'lerini buradan güvenli gir</p></div></div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:8px">🔑 API Key'ler</div>
+    <div class="card-sub" style="margin-bottom:20px">Key'ler sadece bu cihazın tarayıcısında saklanır, kodda görünmez.</div>
+    <div class="form-group">
+      <label>Gemini API Key (Asistan için)</label>
+      <input type="password" id="inputGeminiKey" placeholder="AIzaSy...">
+    </div>
+    <div class="form-group">
+      <label>YouTube API Key (Playlist çekmek için)</label>
+      <input type="password" id="inputYTKey" placeholder="AIzaSy...">
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="keyKaydet()">Kaydet</button>
+      <button class="btn btn-secondary" onclick="keySil()">Temizle</button>
+    </div>
+    <div id="keyDurum" style="margin-top:12px;font-size:13px"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:12px">Mevcut Durum</div>
+    <div id="keyMevcut"></div>
+  </div>
 </div>
 
 <!-- ASİSTAN -->
@@ -590,10 +618,13 @@ function renderKonular(){
   });
 }
 
-const YT_KEY = 'AIzaSyAlRMUhWPV2tczruvovJDt2Avco-lAF8Ys';
+function getYTKey(){ return localStorage.getItem('yt_api_key')||''; }
+function getGeminiKey(){ return localStorage.getItem('gemini_api_key')||''; }
 
 async function playlistCek(ders, playlistId) {
   const durum = document.getElementById('playlistDurum');
+  const YT_KEY = getYTKey();
+  if(!YT_KEY){ durum.style.color='var(--danger)'; durum.textContent='⚙️ Önce Ayarlar sayfasından YouTube API key gir!'; return; }
   const dersAd = {mat:'Matematik',kim:'Kimya',fiz:'Fizik',biy:'Biyoloji'}[ders];
   durum.style.color = 'var(--warn)';
   durum.textContent = dersAd + ' playlist çekiliyor...';
@@ -734,7 +765,8 @@ function renderYanlislar(){
 
 async function sendChat(){
   const input=document.getElementById('chatInput'), msg=input.value.trim();
-  const KEY='AIzaSyBzYMFG2F00oiKk6BnFu3o0i0cZWZuThA4';
+  const KEY=getGeminiKey();
+  if(!KEY){ appendMsg('⚙️ Önce Ayarlar sayfasından Gemini API key gir!','ai'); return; }
   if(!msg)return;
   input.value='';
   appendMsg(msg,'user');
@@ -756,7 +788,42 @@ function appendMsg(t,w,l=false){
   a.appendChild(el);a.scrollTop=a.scrollHeight;return el;
 }
 
-function renderAll(){renderCountdown();renderDashboard();renderPlan();renderKonular();renderDenemeler();renderYanlislar();renderVideolar();}
+function keyKaydet(){
+  const gk=document.getElementById('inputGeminiKey').value.trim();
+  const yk=document.getElementById('inputYTKey').value.trim();
+  if(gk) localStorage.setItem('gemini_api_key', gk);
+  if(yk) localStorage.setItem('yt_api_key', yk);
+  const durum=document.getElementById('keyDurum');
+  durum.style.color='var(--accent)';
+  durum.textContent='✓ Key\'ler kaydedildi!';
+  document.getElementById('inputGeminiKey').value='';
+  document.getElementById('inputYTKey').value='';
+  renderAyarlar();
+}
+function keySil(){
+  localStorage.removeItem('gemini_api_key');
+  localStorage.removeItem('yt_api_key');
+  const durum=document.getElementById('keyDurum');
+  durum.style.color='var(--danger)';
+  durum.textContent='Key\'ler temizlendi.';
+  renderAyarlar();
+}
+function renderAyarlar(){
+  const el=document.getElementById('keyMevcut');
+  if(!el)return;
+  const gk=getGeminiKey(), yk=getYTKey();
+  el.innerHTML=
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">'+
+      '<span style="font-size:14px">Gemini API Key</span>'+
+      '<span class="badge '+(gk?'badge-good':'badge-bad')+'">'+(gk?'✓ Girildi':'✕ Girilmedi')+'</span>'+
+    '</div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">'+
+      '<span style="font-size:14px">YouTube API Key</span>'+
+      '<span class="badge '+(yk?'badge-good':'badge-bad')+'">'+(yk?'✓ Girildi':'✕ Girilmedi')+'</span>'+
+    '</div>';
+}
+
+function renderAll(){renderCountdown();renderDashboard();renderPlan();renderKonular();renderDenemeler();renderYanlislar();renderVideolar();renderAyarlar();}
 
 document.addEventListener('DOMContentLoaded',()=>{
   const dt=document.getElementById('denTarih');if(dt)dt.value=todayKey();
