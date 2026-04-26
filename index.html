@@ -219,12 +219,6 @@ tr:hover td { background: var(--bg); }
     <div id="fizKonular"></div>
   </div>
 </div>
-  <div class="card">
-    <div class="card-header"><div><div class="card-title">🧬 Biyoloji</div><div class="card-sub" id="biySub"></div></div><div class="progress-bar" style="width:120px"><div class="progress-fill" id="biyBar"></div></div></div>
-    <div id="biyKonular"></div>
-  </div>
-</div>
-
 
 <!-- VİDEOLAR -->
 
@@ -440,19 +434,7 @@ const KDB = {
     {id:'f7',ad:'Dalgalar & Optik',durum:'baslamadi',altKonular:['Dalga Özellikleri','Ses Dalgaları','Yansıma-Kırılma','Mercekler']},
     {id:'f8',ad:'Modern Fizik',durum:'baslamadi',altKonular:['Fotoelektrik','De Broglie','Nükleer Fizik','Radyoaktivite']},
   ],
-  biy:[
-    {id:'b1',ad:'Yaşam Bilimi Biyoloji',durum:'bitti',altKonular:['Canlıların Ortak Özellikleri','İnorganik Bileşikler','Organik Bileşikler']},
-    {id:'b2',ad:'Hücre',durum:'bitti',altKonular:['Hücre Zarı','Sitoplazma ve Organeller','Çekirdek','Hücre Bölünmeleri']},
-    {id:'b3',ad:'Canlıların Çeşitliliği',durum:'bitti',altKonular:['Sınıflandırma','Bakteriler','Arkeler','Protistalar','Bitkiler','Hayvanlar']},
-    {id:'b4',ad:'Kalıtım ve Ekoloji',durum:'devam',altKonular:['Mendel Genetiği','Eşeye Bağlı Kalıtım','Ekosistem Ekolojisi']},
-    {id:'b5',ad:'İnsan Fizyolojisi',durum:'devam',altKonular:['Sinir Sistemi','Endokrin Sistem','Destek ve Hareket','Sindirim','Dolaşım','Solunum','Boşaltım','Üreme']},
-    {id:'b6',ad:'Genden Proteine',durum:'baslamadi',altKonular:['Nükleik Asitler','DNA Replikasyonu','Protein Sentezi','Biyoteknoloji']},
-    {id:'b7',ad:'Hücresel Solunum',durum:'baslamadi',altKonular:['Oksijensiz Solunum','Oksijenli Solunum','Fermantasyon']},
-    {id:'b8',ad:'Fotosentez ve Kemosentez',durum:'baslamadi',altKonular:['Fotosentez Reaksiyonları','Kemosentez']},
-    {id:'b9',ad:'Bitki Biyolojisi',durum:'baslamadi',altKonular:['Bitkisel Dokular','Bitki Organları','Taşıma','Üreme']},
-    {id:'b10',ad:'Komünite ve Popülasyon Ekolojisi',durum:'baslamadi',altKonular:['Popülasyon Dinamikleri','Komünite Etkileşimleri']}
-  ],
- };
+};
 
 let S = {
   gorevler:{}, denemeler:[], yanlislar:[], videolar:[],
@@ -618,7 +600,7 @@ function altToggle(ders,kid,ak){
   if(!k.altDone)k.altDone={};k.altDone[ak]=!k.altDone[ak];save();renderKonular();
 }
 function renderKonular(){
-  ['mat','kim','fiz','biy'].forEach(d=>{
+  ['mat','kim','fiz'].forEach(d=>{
     const ks=S.konular[d], b=ks.filter(k=>k.durum==='bitti').length, pct=Math.round(b/ks.length*100);
     const sub=document.getElementById(d+'Sub');if(sub)sub.textContent=b+'/'+ks.length+' konu ('+pct+'%)';
     const bar=document.getElementById(d+'Bar');if(bar)bar.style.width=pct+'%';
@@ -725,7 +707,7 @@ function renderDashboard(){
   document.getElementById('statBugun').textContent=done;
   document.getElementById('statBugunSub').textContent='/ '+total+' görev';
   document.getElementById('bugunBar').style.width=(total?done/total*100:0)+'%';
-  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz,...S.konular.biy];
+  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz];
   const kb=tk.filter(k=>k.durum==='bitti').length, kp=Math.round(kb/tk.length*100);
   document.getElementById('statKonu').textContent=kp+'%';
   document.getElementById('konuBar').style.width=kp+'%';
@@ -789,7 +771,7 @@ async function sendChat(){
   input.value='';
   appendMsg(msg,'user');
   const le=appendMsg('Düşünüyorum...','ai',true);
-  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz,...S.konular.biy];
+  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz];
   const ctx='Sen YKS koçusun. Kullanıcı: Alp, 18 yaş, eczacılık hedefi, AYT Sayısal. YKS: 22 Haziran 2026.\nBitenler: '+tk.filter(k=>k.durum==='bitti').map(k=>k.ad).join(', ')+'\nDevam: '+tk.filter(k=>k.durum==='devam').map(k=>k.ad).join(', ')+'\nSon denemeler: '+JSON.stringify(S.denemeler.slice(-3))+'\nYanlışlar: '+JSON.stringify(S.yanlislar.slice(-5))+'\nSoru: '+msg+'\n\nTürkçe, kısa, motive edici cevap ver.';
   try{
     const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:ctx}]}]})});
