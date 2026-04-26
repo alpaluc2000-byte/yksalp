@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alp — YKS Takip</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 /* ===== DARK THEME (default) ===== */
 :root {
@@ -28,7 +30,7 @@
   --success: #6bffc8;
   --success-light: rgba(107,255,200,0.12);
   --radius: 16px;
-  --glass: blur(20px) saturate(180%);
+  --glass: blur(12px) saturate(150%);
   --shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
   --shadow-accent: 0 0 30px rgba(124,110,245,0.2);
 }
@@ -210,9 +212,7 @@ border: 1px solid var(–border);
 border-radius: 12px;
 transition: all 0.2s;
 background: var(–surface);
-backdrop-filter: blur(10px);
-}
-.task-item:hover { border-color: var(–accent-glow); transform: translateX(2px); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+backdrop-filter: blur(8px);
 .task-item.done { background: var(–success-light); border-color: rgba(107,255,200,0.2); }
 .task-item.done .task-text { text-decoration: line-through; color: var(–muted); }
 .task-check {
@@ -354,9 +354,9 @@ body.light .countdown-value { background: linear-gradient(135deg, var(–accent)
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(–border); border-radius: 99px; }
 @media (max-width: 768px) {
-.mobile-toggle { display: block; position: fixed; top: 14px; left: 14px; z-index: 2000; background: var(–accent); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-family: ‘DM Sans’, sans-serif; cursor: pointer; font-size: 14px; }
-.sidebar { left: -220px; }
-.sidebar.open { left: 0; box-shadow: 4px 0 24px rgba(0,0,0,0.15); }
+.mobile-toggle { display: block; position: fixed; top: 14px; left: 14px; z-index: 2000; background: var(–surface); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); color: var(–text); border: 1px solid var(–border); padding: 8px 14px; border-radius: 10px; font-weight: 600; font-family: ‘DM Sans’, sans-serif; cursor: pointer; font-size: 14px; }
+.sidebar { left: -230px; }
+.sidebar.open { left: 0; box-shadow: 4px 0 24px rgba(0,0,0,0.4); }
 .main { margin-left: 0; max-width: 100%; padding: 16px; padding-top: 62px; }
 .grid-2, .grid-3 { grid-template-columns: 1fr; }
 .hafta-grid { grid-template-columns: repeat(4,1fr); }
@@ -596,10 +596,6 @@ body.light .countdown-value { background: linear-gradient(135deg, var(–accent)
     <div class="modal-footer"><button class="btn btn-secondary" onclick="closeGorevModal()">İptal</button><button class="btn btn-primary" onclick="gorevEkle()">Ekle</button></div>
   </div>
 </div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
 const firebaseConfig = {
