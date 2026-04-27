@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -161,8 +160,6 @@ tr:hover td { background: var(--bg); }
 </nav>
 <main class="main">
 
-<!-- DASHBOARD -->
-
 <div id="page-dashboard" class="page active">
   <div class="page-header"><div><h2>Merhaba Alp 👋</h2><p id="bugunTarih"></p></div></div>
   <div class="countdown-box">
@@ -186,8 +183,6 @@ tr:hover td { background: var(--bg); }
   </div>
 </div>
 
-<!-- PLAN -->
-
 <div id="page-plan" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Günlük Plan</h2><p>Görevleri tıklayarak tamamla</p></div></div>
   <div class="card">
@@ -201,8 +196,6 @@ tr:hover td { background: var(--bg); }
   </div>
   <div class="card"><div class="card-title" style="margin-bottom:16px">Haftalık İlerleme</div><div class="hafta-grid" id="haftaGrid"></div></div>
 </div>
-
-<!-- KONULAR -->
 
 <div id="page-konular" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Konu Takibi</h2><p>Durumu tıklayarak güncelle</p></div></div>
@@ -218,14 +211,14 @@ tr:hover td { background: var(--bg); }
     <div class="card-header"><div><div class="card-title">⚡ Fizik</div><div class="card-sub" id="fizSub"></div></div><div class="progress-bar" style="width:120px"><div class="progress-fill" id="fizBar"></div></div></div>
     <div id="fizKonular"></div>
   </div>
+  <div class="card">
+    <div class="card-header"><div><div class="card-title">🧬 Biyoloji</div><div class="card-sub" id="biySub"></div></div><div class="progress-bar" style="width:120px"><div class="progress-fill" id="biyBar"></div></div></div>
+    <div id="biyKonular"></div>
+  </div>
 </div>
-
-<!-- VİDEOLAR -->
 
 <div id="page-videolar" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Video Havuzu</h2><p>Playlist'ten otomatik çek veya manuel ekle</p></div></div>
-
-  <!-- PLAYLİST ÇEKME -->
 
   <div class="card">
     <div class="card-title" style="margin-bottom:4px">📥 Playlist'ten Otomatik Çek</div>
@@ -238,8 +231,6 @@ tr:hover td { background: var(--bg); }
     </div>
     <div id="playlistDurum" style="font-size:13px;color:var(--muted);min-height:20px"></div>
   </div>
-
-  <!-- MANUEL EKLEME -->
 
   <div class="card">
     <div class="card-title" style="margin-bottom:16px">➕ Manuel Video Ekle</div>
@@ -267,8 +258,6 @@ tr:hover td { background: var(--bg); }
   <p id="videoBos" style="color:var(--muted);font-size:14px;padding:16px 0">Henüz video eklenmedi.</p>
 </div>
 
-<!-- DENEMELER -->
-
 <div id="page-deneme" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Deneme Takibi</h2><p>Net sonuçlarını gir</p></div></div>
   <div class="card">
@@ -292,8 +281,6 @@ tr:hover td { background: var(--bg); }
   </div>
 </div>
 
-<!-- YANLIŞLAR -->
-
 <div id="page-yanlis" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>Yanlış Takibi</h2><p>Hangi konularda takıldığını izle</p></div></div>
   <div class="card">
@@ -308,8 +295,6 @@ tr:hover td { background: var(--bg); }
   <div id="yanlisList"></div>
   <p id="yanlisBos" style="color:var(--muted);font-size:14px">Henüz yanlış girilmedi.</p>
 </div>
-
-<!-- AYARLAR -->
 
 <div id="page-ayarlar" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>⚙️ Ayarlar</h2><p>API key'lerini buradan güvenli gir</p></div></div>
@@ -336,8 +321,6 @@ tr:hover td { background: var(--bg); }
   </div>
 </div>
 
-<!-- ASİSTAN -->
-
 <div id="page-asistan" class="page">
   <div class="page-header"><button class="back-btn" onclick="showPage('dashboard')">← Geri</button><div><h2>YKS Asistanı</h2><p>Sorularını yaz, analiz edelim</p></div></div>
   <div class="card">
@@ -354,15 +337,22 @@ tr:hover td { background: var(--bg); }
 </main>
 </div>
 
-<!-- MODAL -->
-
 <div class="modal-overlay" id="gorevModal">
   <div class="modal">
     <div class="modal-title">Görev Ekle</div>
     <div class="form-group"><label>Görev Adı</label><input type="text" id="yeniGorevAd" placeholder="ör: 20 türev sorusu çöz"></div>
     <div class="form-group"><label>Konu (isteğe bağlı)</label><input type="text" id="yeniGorevKonu" placeholder="ör: Türev uygulamaları"></div>
     <div class="grid-2">
-      <div class="form-group"><label>Ders</label><select id="yeniGorevDers"><option value="mat">Matematik</option><option value="kim">Kimya</option><option value="fiz">Fizik</option><option value="tyt">TYT</option><option value="den">Deneme</option><option value="mol">Mola</option></select></div>
+      <div class="form-group"><label>Ders</label>
+        <select id="yeniGorevDers">
+          <option value="mat">Matematik</option>
+          <option value="kim">Kimya</option>
+          <option value="fiz">Fizik</option>
+          <option value="biy">Biyoloji</option> <option value="tyt">TYT</option>
+          <option value="den">Deneme</option>
+          <option value="mol">Mola</option>
+        </select>
+      </div>
       <div class="form-group"><label>Süre</label><select id="yeniGorevSure"><option>30 dk</option><option>45 dk</option><option>1 saat</option><option>1.5 saat</option><option>2 saat</option></select></div>
     </div>
     <div class="form-group"><label>Video Bağla (isteğe bağlı)</label><select id="yeniGorevVideo"><option value="">— Video bağlama —</option></select></div>
@@ -434,6 +424,23 @@ const KDB = {
     {id:'f7',ad:'Dalgalar & Optik',durum:'baslamadi',altKonular:['Dalga Özellikleri','Ses Dalgaları','Yansıma-Kırılma','Mercekler']},
     {id:'f8',ad:'Modern Fizik',durum:'baslamadi',altKonular:['Fotoelektrik','De Broglie','Nükleer Fizik','Radyoaktivite']},
   ],
+  biy:[
+    {id:'b1',ad:'Sinir Sistemi',durum:'baslamadi',altKonular:['Nöron Yapısı','İmpuls İletimi','Merkezi & Çevresel Sinir']},
+    {id:'b2',ad:'Endokrin Sistem',durum:'baslamadi',altKonular:['Hipofiz & Tiroit','Pankreas & Böbrek Üstü','Eşeysel Bezler']},
+    {id:'b3',ad:'Duyu Organları',durum:'baslamadi',altKonular:['Göz','Kulak','Deri, Burun, Dil']},
+    {id:'b4',ad:'Destek ve Hareket',durum:'baslamadi',altKonular:['Kemik & Kıkırdak','Kas Çeşitleri & Kasılma']},
+    {id:'b5',ad:'Sindirim Sistemi',durum:'baslamadi',altKonular:['Sindirim Organları','Kimyasal Sindirim','Emilim']},
+    {id:'b6',ad:'Dolaşım & Lenf',durum:'baslamadi',altKonular:['Kalp & Damarlar','Kan Dolaşımı','Lenf Sistemi']},
+    {id:'b7',ad:'Bağışıklık Sistemi',durum:'baslamadi',altKonular:['Doğal Bağışıklık','Kazanılmış Bağışıklık']},
+    {id:'b8',ad:'Solunum Sistemi',durum:'baslamadi',altKonular:['Solunum Organları','Gazların Taşınması']},
+    {id:'b9',ad:'Üriner Sistem',durum:'baslamadi',altKonular:['Böbrek & Nefron','İdrar Oluşumu & Homeostazi']},
+    {id:'b10',ad:'Üreme & Gelişim',durum:'baslamadi',altKonular:['Dişi & Erkek Üreme','Menstrüal Döngü','Embriyonik Gelişim']},
+    {id:'b11',ad:'Popülasyon & Komünite Ekolojisi',durum:'baslamadi',altKonular:['Simbiyotik Yaşam','Popülasyon Dinamikleri']},
+    {id:'b12',ad:'Genden Proteine',durum:'baslamadi',altKonular:['Nükleik Asitler','DNA Eşlenmesi','Protein Sentezi']},
+    {id:'b13',ad:'Canlılık ve Enerji',durum:'baslamadi',altKonular:['ATP','Fermantasyon','Oksijenli Solunum']},
+    {id:'b14',ad:'Fotosentez & Kemosentez',durum:'baslamadi',altKonular:['Işığa Bağımlı Evre','Işıktan Bağımsız Evre','Kemosentez']},
+    {id:'b15',ad:'Bitki Biyolojisi',durum:'baslamadi',altKonular:['Bitkisel Dokular','Taşıma Sistemleri','Bitkilerde Üreme']}
+  ]
 };
 
 let S = {
@@ -462,6 +469,8 @@ function firebaseBaslat() {
       S = JSON.parse(local);
       if(!S.videolar) S.videolar=[];
       if(!S.konular) S.konular=JSON.parse(JSON.stringify(KDB));
+      // Biyoloji verisi eskiden olmayanlar için güvenlik kontrolü (biyoloji eklenir)
+      if(!S.konular.biy) S.konular.biy=JSON.parse(JSON.stringify(KDB.biy));
     } catch(e) {}
   }
   renderAll();
@@ -472,6 +481,8 @@ function firebaseBaslat() {
       S = data;
       if(!S.videolar) S.videolar=[];
       if(!S.konular) S.konular=JSON.parse(JSON.stringify(KDB));
+      // Yine de biyoloji yoksa sonradan ekle
+      if(!S.konular.biy) S.konular.biy=JSON.parse(JSON.stringify(KDB.biy));
       localStorage.setItem('alpYKS_v4', JSON.stringify(S));
       renderAll();
     }
@@ -600,7 +611,8 @@ function altToggle(ders,kid,ak){
   if(!k.altDone)k.altDone={};k.altDone[ak]=!k.altDone[ak];save();renderKonular();
 }
 function renderKonular(){
-  ['mat','kim','fiz'].forEach(d=>{
+  // Biyolojiyi de listeye ekledik
+  ['mat','kim','fiz','biy'].forEach(d=>{
     const ks=S.konular[d], b=ks.filter(k=>k.durum==='bitti').length, pct=Math.round(b/ks.length*100);
     const sub=document.getElementById(d+'Sub');if(sub)sub.textContent=b+'/'+ks.length+' konu ('+pct+'%)';
     const bar=document.getElementById(d+'Bar');if(bar)bar.style.width=pct+'%';
@@ -707,7 +719,8 @@ function renderDashboard(){
   document.getElementById('statBugun').textContent=done;
   document.getElementById('statBugunSub').textContent='/ '+total+' görev';
   document.getElementById('bugunBar').style.width=(total?done/total*100:0)+'%';
-  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz];
+  // Biyolojiyi genel istatistiğe kattık
+  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz,...S.konular.biy];
   const kb=tk.filter(k=>k.durum==='bitti').length, kp=Math.round(kb/tk.length*100);
   document.getElementById('statKonu').textContent=kp+'%';
   document.getElementById('konuBar').style.width=kp+'%';
@@ -771,7 +784,8 @@ async function sendChat(){
   input.value='';
   appendMsg(msg,'user');
   const le=appendMsg('Düşünüyorum...','ai',true);
-  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz];
+  // Asistana biyolojiyi de katıyoruz
+  const tk=[...S.konular.mat,...S.konular.kim,...S.konular.fiz,...S.konular.biy];
   const ctx='Sen YKS koçusun. Kullanıcı: Alp, 18 yaş, eczacılık hedefi, AYT Sayısal. YKS: 22 Haziran 2026.\nBitenler: '+tk.filter(k=>k.durum==='bitti').map(k=>k.ad).join(', ')+'\nDevam: '+tk.filter(k=>k.durum==='devam').map(k=>k.ad).join(', ')+'\nSon denemeler: '+JSON.stringify(S.denemeler.slice(-3))+'\nYanlışlar: '+JSON.stringify(S.yanlislar.slice(-5))+'\nSoru: '+msg+'\n\nTürkçe, kısa, motive edici cevap ver.';
   try{
     const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:ctx}]}]})});
